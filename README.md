@@ -9,8 +9,19 @@
 [![Copier](https://img.shields.io/badge/Scaffolding-Copier-FF7139?logo=jinja&logoColor=white)](https://copier.readthedocs.io)
 [![DevSecOps](https://img.shields.io/badge/Security-Bandit%20%2B%20pip--audit-2ea44f?logo=security&logoColor=white)](https://github.com/PyCQA/bandit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+---
 
-[Assumptions & Starting Point](#assumptions--starting-point) • [Prerequisites](#prerequisites) • [Step-by-Step Guide](#step-by-step-guide-from-scratch-to-running) • [Archetypes](#the-6-production-archetypes) • [Commands](#developer-workflow--commands) • [DevSecOps](#devsecops--observability-by-default) • [AI Agents](#ai-agent-ready)
+## 📑 Table of Contents
+
+- [Assumptions & Starting Point](#assumptions--starting-point)
+- [Prerequisites](#prerequisites)
+- [Step-by-Step Guide (From Scratch to Running)](#step-by-step-guide-from-scratch-to-running)
+- [The 6 Production Archetypes](#the-6-production-archetypes)
+- [Developer Workflow & Commands](#developer-workflow--commands)
+- [DevSecOps & Observability by Default](#devsecops--observability-by-default)
+- [AI Agent Ready](#ai-agent-ready)
+- [Keeping Projects Up-to-Date](#keeping-projects-up-to-date)
+- [License](#license)
 
 ---
 
