@@ -21,8 +21,8 @@
 <img src="media/demo.svg" alt="Python Universal Scaffold Interactive Terminal Demo" width="100%"/>
 
 <p align="center">
-  <a href="https://asciinema.org/a/EuaFxorxsB0lgUdK" target="_blank">
-    <img src="https://asciinema.org/a/EuaFxorxsB0lgUdK.svg" alt="Asciinema Interactive Terminal Recording" width="180"/>
+  <a href="https://asciinema.org/a/0YZMB37CKc2pUCre" target="_blank">
+    <img src="https://asciinema.org/a/0YZMB37CKc2pUCre.svg" alt="Asciinema Interactive Terminal Recording" width="220"/>
   </a>
   <br/>
   <em>Click badge above to play interactive terminal recording via browser</em>
