@@ -1,58 +1,58 @@
 # {{ project_name }}
 
-> Arketipe: **`{{ project_archetype }}`** | Python **{{ python_version }}** | Tooling: **mise + uv + Taskfile**
+> Archetype: **`{{ project_archetype }}`** | Python **{{ python_version }}** | Tooling: **mise + uv + Taskfile**
 
-{{ project_archetype | capitalize }} project yang dibangun dengan standar arsitektur modern berbasis virtualenv terisolasi, locking deterministik, dan DevSecOps hardening.
+Production-ready {{ project_archetype }} project built with modern isolated virtual environments, deterministic lockfiles, and DevSecOps hardening.
 
 ---
 
 ## ⚡ Quickstart
 
-### 1. Inisialisasi Environment
+### 1. Initialize Environment
 ```bash
-# Izinkan mise pada direktori ini (jika menggunakan mise)
+# Trust local directory configuration (if using mise)
 mise trust
 
-# Setup file .env dan install dependensi ke .venv
+# Setup .env file and install dependencies into .venv
 task setup
 ```
 
-### 2. Menjalankan Layanan / Workflow
+### 2. Run Service / Workflow
 {% if project_archetype == 'api-service' %}
 ```bash
-# Jalankan FastAPI dev server dengan auto-reload (port 8000)
+# Start FastAPI dev server with auto-reload (port 8000)
 task dev
 ```
-Buka dokumentasi Swagger UI di: `http://localhost:8000/docs`
+Open interactive Swagger UI docs at: `http://localhost:8000/docs`
 {% elif project_archetype == 'data-analytics' %}
 ```bash
-# Buka Jupyter Lab untuk eksplorasi data
+# Launch JupyterLab environment
 task notebook
 
-# Eksekusi pipeline analisis & transformasi
+# Execute data extraction & transformation pipeline
 task run
 ```
 {% elif project_archetype == 'ai-ml' %}
 ```bash
-# Jalankan skrip training model
+# Start model training loop
 task train
 
-# Jalankan evaluasi model / skrip inference
+# Run model evaluation / inference script
 task eval
 ```
 {% elif project_archetype == 'pipeline-worker' %}
 ```bash
-# Jalankan worker consumer background task
+# Run background task queue worker
 task worker
 ```
 {% elif project_archetype == 'cli-tool' %}
 ```bash
-# Jalankan perintah CLI lokal
+# Execute local CLI tool
 task run -- --help
 ```
 {% elif project_archetype == 'library-package' %}
 ```bash
-# Build package wheel dan sdist
+# Build wheel and sdist distribution packages
 task build
 ```
 {% endif %}
@@ -61,41 +61,41 @@ task build
 
 ## 🛡 Quality Gate & Testing
 
-Jalankan serangkaian pengujian dan audit sebelum melakukan commit:
+Run all quality and security validations before committing changes:
 
 ```bash
-# Linting & Formatting check
+# Check code formatting and linting
 task lint
 
-# Perbaiki format kode secara otomatis
+# Automatically fix format and autofixable lint issues
 task fix
 
-# Static Type Checking dengan Pyright
+# Static type verification with Pyright
 task typecheck
 
-# Jalankan Pytest dengan test coverage
+# Run test suite with Pytest & coverage report
 task test
 
-# Audit kerentanan dependensi (CVE)
+# Audit third-party dependencies for CVEs
 task audit:deps
 
-# Audit keamanan kode sumber (SAST Bandit)
+# Static Application Security Testing (SAST) via Bandit
 task audit:sast
 
-# Jalankan semua quality gate sekaligus
+# Run all quality checks in a single pass
 task check:all
 ```
 
 {% if include_container %}
 ---
 
-## 🐳 Container Docker
+## 🐳 Docker Container
 
 ```bash
-# Build image Docker produksi (non-root UID 10001)
+# Build production Docker image (non-root UID 10001)
 task docker:build
 
-# Jalankan container lokal
+# Run container locally with environment configuration
 task docker:run
 ```
 {% endif %}

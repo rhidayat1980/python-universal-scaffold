@@ -1,231 +1,236 @@
-# 🚀 Python Universal Scaffold (`python-universal-scaffold`)
+<div align="center">
 
-> **Production-Ready, Modular Python Project Generator** yang mengintegrasikan ekosistem tooling modern: **Copier**, **mise**, **uv**, **Taskfile**, dan **DevSecOps Hardening**.
+# 🚀 Python Universal Scaffold
 
-Mendukung **6 Arketipe Industri Python** dengan zero host pollution, dependency locking instan, penegakan type safety, dan standarisasi developer experience lokal hingga CI/CD.
+**A Production-Grade, Multi-Archetype Python Project Generator**  
+*Engineered for modern engineering teams using **Copier**, **mise**, **uv**, **Taskfile**, and **DevSecOps Hardening**.*
+
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%20%7C%203.13-blue?logo=python&logoColor=white)](https://python.org)
+[![uv](https://img.shields.io/badge/Package%20Manager-Astral%20uv-6E40C9?logo=dependabot&logoColor=white)](https://astral.sh/uv)
+[![mise](https://img.shields.io/badge/Runtime-mise-007ACC?logo=gnu-bash&logoColor=white)](https://mise.jdx.dev)
+[![Copier](https://img.shields.io/badge/Scaffolding-Copier-FF7139?logo=jinja&logoColor=white)](https://copier.readthedocs.io)
+[![DevSecOps](https://img.shields.io/badge/Security-Bandit%20%2B%20pip--audit-2ea44f?logo=security&logoColor=white)](https://github.com/PyCQA/bandit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+<p align="center">
+  <a href="#-assumptions--starting-point">Assumptions & Starting Point</a> •
+  <a href="#-prerequisites">Prerequisites</a> •
+  <a href="#-step-by-step-guide-from-scratch">Step-by-Step Guide</a> •
+  <a href="#-the-6-production-archetypes">Archetypes</a> •
+  <a href="#-developer-workflow--commands">Commands</a> •
+  <a href="#-devsecops--observability">DevSecOps</a> •
+  <a href="#-ai-agent-ready">AI Agents</a>
+</p>
+
+</div>
 
 ---
 
-## 📑 Daftar Isi
+## 🎯 Assumptions & Starting Point
 
-- [🚀 Python Universal Scaffold (`python-universal-scaffold`)](#-python-universal-scaffold-python-universal-scaffold)
-  - [📑 Daftar Isi](#-daftar-isi)
-  - [🏛 Arsitektur \& Prinsip Desain](#-arsitektur--prinsip-desain)
-    - [Prinsip Utama](#prinsip-utama)
-  - [📦 6 Arketipe Proyek yang Didukung](#-6-arketipe-proyek-yang-didukung)
-  - [📂 Struktur Repositori Scaffolding](#-struktur-repositori-scaffolding)
-  - [⚡ Panduan Penggunaan Cepat (Quickstart)](#-panduan-penggunaan-cepat-quickstart)
-    - [Prasyarat](#prasyarat)
-    - [1. Generate Menggunakan Copier](#1-generate-menggunakan-copier)
-    - [2. Inisialisasi \& Verifikasi Proyek Baru](#2-inisialisasi--verifikasi-proyek-baru)
-  - [🛡 Matriks Fitur DevSecOps \& Observability](#-matriks-fitur-devsecops--observability)
-  - [🛠 Daftar Perintah Taskfile](#-daftar-perintah-taskfile)
-  - [🤖 Integrasi AI Agent](#-integrasi-ai-agent)
-  - [📄 Lisensi](#-lisensi)
+Before using this scaffold generator, understand the foundational design philosophy and target environment:
+
+### 1. Key Assumptions
+- **Modern Python Only**: This scaffold assumes **Python 3.12 or 3.13**. Legacy Python (<=3.11) is intentionally unsupported to leverage modern type syntax, fast asyncio, and performance gains.
+- **Zero Host Pollution**: You should **never** install application packages globally or use standard `pip install`. Every project manages its own hermetic virtual environment (`.venv/`) via `uv`.
+- **Reproducible Runtimes**: We assume tool versions (`uv`, `go-task`, `python`) should be locked per-project to guarantee that code runs identically on Linux, macOS, WSL2, and CI/CD pipelines.
+- **Strict `src/` Layout**: All source code is placed inside `src/<package_name>/`. Flat layouts are avoided to prevent packaging ambiguities and import side-effects.
+
+### 2. Starting Point
+- **As an Individual Developer or Team**: You want to start a brand new Python service, pipeline, or library without wasting hours configuring linters, typecheckers, Dockerfiles, and CI pipelines.
+- **You do NOT need a cloned template to use it**: You can generate projects directly from the GitHub repository using a single command (`uvx copier copy`).
+- **You CAN update existing projects**: Because the scaffold is powered by Copier, you can update an existing project later when the template evolves by running `copier update`.
 
 ---
 
-## 🏛 Arsitektur & Prinsip Desain
+## 📋 Prerequisites
 
-Arsitektur scaffolding ini membagi tanggung jawab secara deterministik dan terisolasi:
+You only need **one** of the following tools installed on your system (Linux, macOS, or Windows WSL2):
 
-```mermaid
-flowchart TD
-    subgraph Developer_Environment["1. Developer & Machine Layer (mise)"]
-        Mise["mise (Runtime & Tool Manager)"]
-        Mise -->|Kelola Biner| UV_CLI["uv CLI"]
-        Mise -->|Kelola Biner| Task_CLI["go-task CLI"]
-        Mise -->|Kelola Versi| Py_Runtime["Python Runtime (3.12 / 3.13)"]
-    end
+### Option A: Using `uv` (Recommended - Zero Configuration)
+If you have [Astral uv](https://docs.astral.sh/uv/) installed:
+```bash
+# Verify installation
+uv --version
+```
+> `uv` includes `uvx`, which downloads and runs Copier in an ephemeral cache without installing anything globally!
 
-    subgraph Dependency_Management["2. Package & Venv Layer (uv)"]
-        UV_CLI -->|Locking & Resolution| Lock["uv.lock (Deterministic)"]
-        UV_CLI -->|Virtualenv Terisolasi| Venv[".venv (Fast symlink/hardlink)"]
-        UV_CLI -->|Eksekusi Cepat| Run["uv run / uv sync"]
-    end
-
-    subgraph Task_Runner["3. Workflow & Automation Layer (Taskfile)"]
-        Task_CLI -->|Standarisasi Eksekusi| Tasks["task setup | task dev | task test | task check:all"]
-    end
-
-    subgraph Generation_Engine["4. Templating Engine (Copier)"]
-        Copier["uvx copier copy"] -->|Interactive Questions| Repo["New Project Structure"]
-    end
-
-    Developer_Environment --> Dependency_Management
-    Dependency_Management --> Task_Runner
+### Option B: Using `mise` (Polyglot Tool Manager)
+If your machine uses [mise-en-place](https://mise.jdx.dev/):
+```bash
+# Install uv, copier, and task via mise
+mise use -g uv@latest copier@latest task@latest
 ```
 
-### Prinsip Utama
-
-1. **Zero Host Pollution**: Host mesin lokal pengembang tidak pernah tercemar paket global. Semua dependensi terisolasi dalam `.venv/` lokal dengan locking kaku pada `uv.lock`.
-2. **Single Tooling Config**: Konfigurasi linter (`ruff`), type checker (`pyright`), testing (`pytest`), dan dependency groups berada terpusat di `pyproject.toml`.
-3. **Src Layout Pattern**: Menggunakan struktur `src/<package_name>/` untuk menghindari *import side-effect* yang sering terjadi pada layout flat konvensional.
-4. **DevSecOps Native**: Multi-stage Dockerfile berjalan dengan **non-root user (UID 10001)**, pemindaian kerentanan paket pihak ketiga via `uv pip-audit`, dan SAST source code via `bandit`.
+*(Optional)* If you plan to build container images locally, ensure **Docker** or **Podman** is installed and running.
 
 ---
 
-## 📦 6 Arketipe Proyek yang Didukung
+## 🚀 Step-by-Step Guide (From Scratch to Running)
 
-| Arketipe | Fokus & Use Case | Core Dependencies | Command Utama |
-| :--- | :--- | :--- | :--- |
-| **`api-service`** | REST / Async API Backend berkinerja tinggi | FastAPI, Uvicorn, Pydantic v2, Pydantic-Settings *(Opsional: SQLAlchemy 2.0 asyncpg, Alembic)* | `task dev` |
-| **`data-analytics`** | Riset data, eksplorasi analitik, dan pipeline ETL/ELT | Polars, DuckDB, PyArrow, JupyterLab, Altair | `task notebook`<br>`task run` |
-| **`ai-ml`** | Training loop, inference model, dan LLM pipeline | PyTorch (CPU / CUDA-12), HuggingFace Hub, NumPy 2.0 | `task train`<br>`task eval` |
-| **`pipeline-worker`** | Worker pemroses background task & antrean asinkron | Redis, Tenacity, Structlog, Pydantic-Settings | `task worker` |
-| **`cli-tool`** | Aplikasi antarmuka baris perintah (CLI) terminal modern | Typer, Rich | `task run -- --help` |
-| **`library-package`** | Library/paket reusable untuk distribusi PyPI / private repo | Hatchling build system, zero runtime overhead | `task build` |
+Follow these steps to scaffold and run a production-ready application in under 2 minutes:
 
----
-
-## 📂 Struktur Repositori Scaffolding
-
-```text
-python-universal-scaffold/
-├── copier.yml                                # Konfigurasi interaktif & validasi input Copier
-├── README.md                                 # Dokumentasi utama proyek generator
-├── AGENTS.md                                 # Petunjuk instruksi operasional untuk AI Agent
-├── Agent.md                                  # Mirroring untuk kompabilitas multi-agent IDE
-├── .agents/                                  # Antigravity/Agent Skills & Rules Root
-│   ├── rules/
-│   │   └── python-standards.md               # Konvensi coding, typing, dan arsitektur
-│   └── skills/
-│       ├── python-scaffold-expert/SKILL.md   # Runbook pembuatan & kustomisasi template
-│       └── python-devsecops-audit/SKILL.md   # Runbook audit CVE, SAST, & container
-├── .agent/                                   # Alias untuk tooling agent konvensional
-└── template/                                 # Jinja2 Dynamic Project Blueprint
-    ├── .github/workflows/ci.yml.jinja        # CI Pipeline deterministik (jdx/mise-action)
-    ├── .dockerignore
-    ├── .gitignore
-    ├── .python-version
-    ├── mise.toml.jinja                       # Tooling versions (uv, task, python)
-    ├── Taskfile.yml.jinja                    # Task automation terpadu
-    ├── pyproject.toml.jinja                  # Central dependency & tool configurations
-    ├── .env.example.jinja                    # Environment template terisolasi
-    ├── README.md.jinja                       # README dinamis untuk proyek yang digenerate
-    ├── Dockerfile.jinja                      # Hardened non-root multi-stage container
-    ├── data/                                 # Folder data (raw, interim, processed) [data-analytics]
-    ├── notebooks/                            # Jupyter notebooks [data-analytics]
-    ├── models/ & datasets/                   # Artifacts ML [ai-ml]
-    ├── src/{{ package_name }}/
-    │   ├── __init__.py
-    │   ├── py.typed
-    │   ├── core/
-    │   │   ├── config.py                     # Pydantic BaseSettings
-    │   │   └── logging.py                    # Production JSON structlog setup
-    │   ├── api/ & schemas/ & db/             # Submodul arketipe api-service
-    │   ├── pipelines/ & queries/             # Submodul arketipe data-analytics
-    │   ├── inference.py & training/          # Submodul arketipe ai-ml
-    │   ├── worker.py & tasks.py              # Submodul arketipe pipeline-worker
-    │   ├── cli.py                            # Submodul arketipe cli-tool
-    │   └── exceptions.py                     # Submodul arketipe library-package
-    └── tests/
-        ├── conftest.py
-        ├── test_smoke.py
-        ├── unit/
-        └── integration/
-```
-
----
-
-## ⚡ Panduan Penggunaan Cepat (Quickstart)
-
-### Prasyarat
-
-Pastikan Anda telah memiliki `uv` (atau runtime `mise`) di sistem Anda. Anda tidak perlu menginstal Copier secara permanen di host!
-
-### 1. Generate Menggunakan Copier
-
-Jalankan perintah ini dari terminal:
+### Step 1: Run the Generator
+Open your terminal in the directory where you want your new project folder to reside, then execute:
 
 ```bash
-# Menggunakan path direktori template lokal:
-uvx copier copy /path/to/python-universal-scaffold my-new-service
-
-# Atau jika template sudah di-push ke GitHub:
-uvx copier copy gh:username/python-universal-scaffold my-new-service
+uvx copier copy gh:rhidayat1980/python-universal-scaffold my-new-service
 ```
-
-Copier akan mengajukan pertanyaan interaktif:
-
-1. **project_name**: Nama proyek (kebab-case, misal `payment-gateway`)
-2. **package_name**: Nama modul Python (snake_case otomatis)
-3. **project_archetype**: Pilih salah satu dari 6 arketipe
-4. **python_version**: Versi target (`3.12` atau `3.13`)
-5. **include_container**: Sertakan Dockerfile hardened multi-stage? (`True`/`False`)
-6. **include_database**: Sertakan SQLAlchemy async + Alembic? (untuk `api-service` / `worker`)
-7. **compute_target**: `cpu` atau `cuda-12` (jika arketipe `ai-ml`)
+*(Alternatively, if working with a local clone of this template repository: `copier copy /path/to/python-universal-scaffold my-new-service`)*
 
 ---
 
-### 2. Inisialisasi & Verifikasi Proyek Baru
+### Step 2: Answer the Interactive Prompts
+Copier will prompt you with the following configuration options:
 
-Setelah proses generate selesai, jalankan langkah berikut di folder proyek baru:
+| Prompt | Description | Default | Example Options |
+| :--- | :--- | :--- | :--- |
+| `project_name` | The repository/folder name in kebab-case | `python-service` | `billing-api`, `fraud-detector` |
+| `package_name` | Python module import name (snake_case) | *(Derived from project name)* | `billing_api`, `fraud_detector` |
+| `project_archetype` | Architecture domain archetype | `api-service` | `api-service`, `data-analytics`, `ai-ml`, `pipeline-worker`, `cli-tool`, `library-package` |
+| `python_version` | Target Python runtime | `3.12` | `3.12`, `3.13` |
+| `include_container` | Include hardened multi-stage Dockerfile | `true` | `true`, `false` |
+| `include_database` | Include async SQLAlchemy 2.0 + Alembic | `false` | `true`, `false` *(API / Worker only)* |
+| `compute_target` | Hardware compute accelerator for AI/ML | `cpu` | `cpu`, `cuda-12` *(AI/ML only)* |
+| `author_name` | Maintainer full name | `Engineering Team` | `Jane Doe` |
+| `author_email` | Maintainer email address | `dev@company.local`| `jane@company.com` |
+
+---
+
+### Step 3: Enter and Trust the Environment
+Navigate into your newly generated repository:
 
 ```bash
 cd my-new-service
 
-# 1. Izinkan konfigurasi mise lokal (jika menggunakan mise)
+# If you use mise, trust the project-level tool configuration:
 mise trust
-
-# 2. Inisialisasi .env dan sinkronkan dependensi virtual environment
-task setup
-
-# 3. Jalankan server atau workflow sesuai arketipe
-task dev          # Jika arketipe api-service
-task notebook     # Jika arketipe data-analytics
-task train        # Jika arketipe ai-ml
-task worker       # Jika arketipe pipeline-worker
-task run          # Jika arketipe cli-tool
-
-# 4. Jalankan Quality Gate komprehensif (Lint, Typecheck, Test, DevSecOps)
-task check:all
 ```
 
 ---
 
-## 🛡 Matriks Fitur DevSecOps & Observability
-
-| Komponen | Implementasi & Standar |
-| :--- | :--- |
-| **Container Hardening** | Multi-stage build berbasis `ghcr.io/astral-sh/uv` dan `python:slim`, `USER appuser` (UID 10001, GID 10001), `HEALTHCHECK` terintegrasi, optimasi build cache mount. |
-| **Dependency CVE Scan** | Pemindaian kerentanan paket pihak ketiga menggunakan `uv run pip-audit` yang terdaftar dalam `task audit:deps`. |
-| **SAST (Static Analysis)** | Analisis statis kerentanan kode sumber menggunakan `bandit -r src/` yang terdaftar dalam `task audit:sast`. |
-| **Structured Logging** | Konfigurasi logging JSON standar industri menggunakan `structlog` di `src/<pkg>/core/logging.py`, menyertakan timestamp ISO, level log, konteks request ID, dan exception traceback formatting. |
-| **CI/CD Automations** | Workflow GitHub Actions (`.github/workflows/ci.yml`) menggunakan `jdx/mise-action@v2` yang menjalankan `task check:all` secara deterministik identik dengan mesin lokal developer. |
-
----
-
-## 🛠 Daftar Perintah Taskfile
-
-Semua proyek yang di-generate dilengkapi dengan `Taskfile.yml` standar:
+### Step 4: One-Click Environment Setup
+Run the unified setup task:
 
 ```bash
-task setup              # Buat .env dari .env.example dan install venv via uv sync
-task test               # Jalankan pytest dengan visualisasi terminal coverage
-task typecheck          # Validasi tipe statis menggunakan Pyright
-task lint               # Periksa kualitas kode dan format dengan Ruff
-task fix                # Auto-format dan auto-fix linting issues dengan Ruff
-task audit:deps         # Audit CVE paket dependensi via pip-audit
-task audit:sast         # Analisis keamanan kode via Bandit
-task check:all          # Jalankan seluruh quality gate (Lint + Type + Test + Security)
-task docker:build       # Build image container Docker produksi
-task docker:run         # Jalankan container Docker lokal dengan port mapping
+task setup
+```
+This task automatically:
+1. Creates a local `.env` configuration file from `.env.example` (if not already present).
+2. Provisions a dedicated `.venv/` virtual environment.
+3. Installs and locks all runtime and development dependencies deterministically via `uv sync`.
+
+---
+
+### Step 5: Start Developing!
+Launch your workload according to the chosen archetype:
+
+```bash
+# If api-service (FastAPI on http://localhost:8000)
+task dev
+
+# If data-analytics (JupyterLab exploration)
+task notebook
+
+# If ai-ml (Model training loop)
+task train
+
+# If pipeline-worker (Background queue consumer)
+task worker
+
+# If cli-tool (Terminal command)
+task run -- --help
 ```
 
 ---
 
-## 🤖 Integrasi AI Agent
+### Step 6: Validate with the Quality Gate
+Before submitting any pull request or pushing code, run the full DevSecOps Quality Gate:
 
-Proyek ini telah dirancang khusus agar kompatibel dengan autonomous AI coding assistants (Antigravity IDE, Cursor, Windsurf, Claude Code, OpenHands):
-
-- **[`AGENTS.md`](./AGENTS.md)**: Master guidelines untuk agen saat membaca, memodifikasi, dan menambah template.
-- **`.agents/rules/python-standards.md`**: Aturan penulisan kode modern Python berbasis uv.
-- **`.agents/skills/python-scaffold-expert/`**: Instruksi eksekusi scaffolding dan validasi rendering template.
-- **`.agents/skills/python-devsecops-audit/`**: Instruksi audit keamanan otomatis sebelum deploy.
+```bash
+task check:all
+```
+This single command executes:
+- ✅ Code formatting & linting with **Ruff**
+- ✅ Strict static type validation with **Pyright**
+- ✅ Test suite execution with coverage report via **Pytest**
+- ✅ Third-party dependency vulnerability scanning via **pip-audit**
+- ✅ Source code security scanning (SAST) via **Bandit**
 
 ---
 
-## 📄 Lisensi
+## 📦 The 6 Production Archetypes
 
-Didistribusikan di bawah lisensi MIT. Bebas digunakan untuk keperluan komersial maupun internal perusahaan.
+| Archetype | Description & Tech Stack | Core Files in `src/<pkg>/` | Primary Task Command |
+| :--- | :--- | :--- | :--- |
+| **`api-service`** | Production REST / Async Web API with **FastAPI**, **Uvicorn**, **Pydantic v2**, and optional async **SQLAlchemy 2.0 + Alembic**. | `main.py`<br>`api/routes.py`<br>`schemas/`<br>`db/session.py` | `task dev` |
+| **`data-analytics`** | High-performance analytics & ETL engineering with **Polars**, **DuckDB**, **PyArrow**, and **JupyterLab**. | `pipelines/transform.py`<br>`queries/metrics.sql`<br>`notebooks/01_exploration.ipynb` | `task notebook`<br>`task run` |
+| **`ai-ml`** | Deep learning and LLM fine-tuning pipelines using **PyTorch** (CPU / CUDA-12), **HuggingFace Hub**, and **NumPy 2.0**. | `training/train.py`<br>`inference.py`<br>`models/`, `datasets/` | `task train`<br>`task eval` |
+| **`pipeline-worker`** | Resilient async background consumer with **Redis**, **Tenacity** exponential retries, and **Structlog**. | `worker.py`<br>`tasks.py` | `task worker` |
+| **`cli-tool`** | Modern interactive terminal application powered by **Typer** and visual tables with **Rich**. | `cli.py` | `task run -- --help` |
+| **`library-package`** | Zero-dependency reusable distribution package built with **Hatchling**, PEP 561 typing (`py.typed`), and custom exceptions. | `core.py`<br>`exceptions.py` | `task build` |
+
+---
+
+## 🛠 Developer Workflow & Commands
+
+Every generated project includes a standardized `Taskfile.yml` so you never have to remember disparate CLI invocations:
+
+```bash
+task setup              # Initialize .env and synchronize dependencies into .venv
+task test               # Run Pytest test suite with terminal coverage report
+task typecheck          # Validate static type safety with Pyright
+task lint               # Check formatting and style rules with Ruff
+task fix                # Auto-format and autofix lint issues
+task audit:deps         # Scan third-party packages for known CVEs (pip-audit)
+task audit:sast         # Static Application Security Testing (Bandit)
+task check:all          # Run entire Quality Gate (Lint + Type + Test + Security)
+task docker:build       # Build production multi-stage container image
+task docker:run         # Run production container locally
+```
+
+---
+
+## 🛡 DevSecOps & Observability by Default
+
+### 1. Hardened Docker Containers
+- **Multi-Stage Build**: Builder stage leverages Astral uv caching (`--mount=type=cache,target=/root/.cache/uv`), reducing build times by up to 90%.
+- **Non-Root Execution**: Runs under an unprivileged user `appuser` (`UID 10001:GID 10001`), preventing container breakout attacks.
+- **Native Health Checks**: Includes an integrated `HEALTHCHECK` probing `/healthz` for Kubernetes, Docker Swarm, and GCP Cloud Run.
+
+### 2. Structured JSON Logging
+- Pre-configured using `structlog` in `src/<pkg>/core/logging.py`.
+- Formats logs into standard JSON with ISO timestamps, log levels, contextual metadata, and traceback rendering, ready for Datadog, Grafana Loki, or Google Cloud Logging.
+
+### 3. CI/CD GitHub Actions
+- Pre-configured `.github/workflows/ci.yml` using `jdx/mise-action@v2`.
+- Local developers and CI runners execute the exact same task: `task check:all`.
+
+---
+
+## 🤖 AI Agent Ready
+
+This repository is tailored for autonomous AI programming assistants (**Antigravity IDE**, **Cursor**, **Windsurf**, **Claude Code**, **OpenHands**):
+
+- **[`AGENTS.md`](./AGENTS.md)**: Clear behavioral rules, architecture boundaries, and Jinja template integrity instructions.
+- **[`.agents/rules/python-standards.md`](./.agents/rules/python-standards.md)**: Coding standards for Python 3.12+, typing, and `pyproject.toml`.
+- **[`.agents/skills/python-scaffold-expert/`](./.agents/skills/python-scaffold-expert/)**: Procedural guide for scaffolding, testing, and modifying templates.
+- **[`.agents/skills/python-devsecops-audit/`](./.agents/skills/python-devsecops-audit/)**: Security scanning and container verification runbook.
+
+---
+
+## 🔄 Keeping Projects Up-to-Date
+
+When new features or security enhancements are released in this template, update existing projects seamlessly without losing custom business logic:
+
+```bash
+cd my-new-service
+copier update
+```
+Copier computes a three-way Git diff, allowing you to review and merge template improvements effortlessly.
+
+---
+
+## 📄 License
+
+Distributed under the [MIT License](LICENSE). Free for open-source and commercial use.

@@ -1,97 +1,93 @@
-# 🧠 AGENTS.md - Operational Protocol & Architecture Directive
+# 🧠 AGENTS.md - Operational Protocol & Architecture Directives
 
-> **Target Audience**: AI Agents (Antigravity, Cursor, Windsurf, Claude Code, Copilot Workspace, OpenHands).
-> **Purpose**: Menetapkan standar arsitektur, batasan teknis, aturan sintaksis Jinja Copier, dan alur kerja deterministik untuk proyek `python-universal-scaffold`.
-
----
-
-## 1. Identitas & Peran Proyek
-
-Repositori ini adalah **Universal Scaffolding Generator untuk Python Modern** berbasis **Copier**, **mise**, **uv**, dan **Taskfile**.
-Tujuan utama generator ini adalah mencakup 6 arketipe Python level produksi tanpa memperkenalkan *dependency bloat*, *host pollution*, atau inkonsistensi tooling.
-
-Setiap kali Anda (AI Agent) berinteraksi dengan repositori ini, Anda harus mempertahankan:
-
-1. **Pemisahan Peran**:
-   - `mise` mengelola binary CLI (`uv`, `copier` `task`, dan runtime `python`).
-   - `uv` mengelola dependensi Python, lockfile (`uv.lock`), resolusi paket, dan `.venv`.
-   - `Taskfile` mengorkestrasi semua perintah CLI pengembang dan CI/CD.
-   - `copier` menangani rendering template parametrik dan diff-based template upgrades.
-2. **Kepatuhan Template Jinja**: Seluruh file di dalam direktori `template/` adalah template Jinja2. Jangan pernah mengedit placeholder Jinja menjadi hardcoded string kecuali jika Anda sedang menguji proyek hasil generasi di luar `template/`.
+> **Target Audience**: AI Agents (Antigravity IDE, Cursor, Windsurf, Claude Code, Copilot Workspace, OpenHands).
+> **Purpose**: Establish immutable architectural standards, template constraints, Jinja2 syntax rules, and deterministic workflows for `python-universal-scaffold`.
 
 ---
 
-## 2. Peta 6 Arketipe & Ketentuan Teknis
+## 1. Project Identity & Architecture Role
 
-| Arketipe | Kriteria File yang Wajib Ada di `template/src/{{ package_name }}/` | Dependensi Inti |
+This repository is a **Universal Scaffolding Generator for Modern Python** powered by **Copier**, **mise**, **uv**, and **Taskfile**.
+Its mission is to support **6 production archetypes** without introducing dependency bloat, host machine pollution, or tooling ambiguities.
+
+Whenever you (the AI Agent) interact with this repository, you must maintain:
+1. **Separation of Concerns**:
+   - `mise`: Manages machine-level CLI binaries (`uv`, `go-task`, and runtime `python`).
+   - `uv`: Manages Python package resolution, deterministic locking (`uv.lock`), and virtual environment (`.venv/`).
+   - `Taskfile`: Orchestrates all developer commands and CI/CD jobs uniformly.
+   - `copier`: Handles parametric Jinja2 templating, input prompt validation, and 3-way merge updates.
+2. **Template Integrity**: All files inside `template/` are Jinja2 templates. Never replace Jinja variables with hardcoded strings inside `template/`.
+
+---
+
+## 2. The 6 Archetypes & Required File Structure
+
+| Archetype | Required Submodules in `template/src/{{ package_name }}/` | Core Dependencies |
 | :--- | :--- | :--- |
-| `api-service` | `main.py`, `api/routes.py`, `core/config.py`, `core/logging.py`, `schemas/` *(opsional: `db/session.py`, `models/`)* | `fastapi`, `uvicorn[standard]`, `pydantic-settings` |
+| `api-service` | `main.py`, `api/routes.py`, `core/config.py`, `core/logging.py`, `schemas/` *(optional: `db/session.py`, `models/base.py`)* | `fastapi`, `uvicorn[standard]`, `pydantic-settings` |
 | `data-analytics` | `pipelines/transform.py`, `queries/metrics.sql`, `notebooks/01_exploration.ipynb`, `data/{raw,interim,processed}/` | `polars`, `duckdb`, `pyarrow`, `jupyterlab`, `altair` |
-| `ai-ml` | `inference.py`, `training/train.py`, `models/.gitkeep`, `datasets/.gitkeep` | `torch` (extra index url cpu/cu121), `huggingface-hub`, `numpy` |
-| `pipeline-worker` | `worker.py`, `tasks.py`, `core/config.py` | `redis`, `structlog`, `tenacity`, `pydantic-settings` |
+| `ai-ml` | `inference.py`, `training/train.py`, `models/.gitkeep`, `datasets/.gitkeep` | `torch` (CPU or CUDA-12 wheel index), `huggingface-hub`, `numpy` |
+| `pipeline-worker`| `worker.py`, `tasks.py`, `core/config.py` | `redis`, `structlog`, `tenacity`, `pydantic-settings` |
 | `cli-tool` | `cli.py`, `core/config.py` | `typer`, `rich` |
-| `library-package` | `core.py`, `exceptions.py`, `py.typed` | Zero unnecessary dependencies; pure standard library / minimal |
+| `library-package`| `core.py`, `exceptions.py`, `py.typed` | Zero external bloat; pure Python standard library |
 
 ---
 
-## 3. Aturan Kritis Penulisan Kode (Non-Negotiable)
+## 3. Critical Code Standards (Non-Negotiable)
 
-### A. Layout dan Packaging
+### A. Layout & Packaging Standards
+- **Mandatory `src/` Layout**: All Python code must reside inside `src/{{ package_name }}/`. Flat layouts are strictly prohibited to prevent import shadowing and test environment pollution.
+- **Build Backend**: Use `hatchling` (`[build-system] requires = ["hatchling"]`, `build-backend = "hatchling.build"`).
+- **PEP 561 Marker**: Always keep `src/{{ package_name }}/py.typed` to signal downstream type checkers.
 
-- **Wajib Layout `src/`**: Jangan pernah membuat root package flat. Paket Python harus berada di `src/{{ package_name }}/`.
-- **Packaging Standard**: Menggunakan `hatchling` sebagai build backend di `pyproject.toml.jinja`.
-- **Marker `py.typed`**: File kosong `py.typed` wajib disertakan pada root paket untuk mendukung downstream type checkers.
-
-### B. Single Configuration File
-
-- Seluruh konfigurasi tool (`ruff`, `pyright`, `pytest`, build wheel) **harus terpusat di `pyproject.toml`**.
-- Dilarang membuat file konfigurasi terpisah seperti `.flake8`, `setup.cfg`, `tox.ini`, atau `mypy.ini`.
+### B. Single Configuration Rule
+- All tool configurations (`ruff`, `pyright`, `pytest`, hatch packaging) **must be centralized in `pyproject.toml`**.
+- Never introduce separate configuration files such as `.flake8`, `setup.cfg`, `tox.ini`, or `mypy.ini`.
 
 ### C. Container Hardening (DevSecOps)
+- `Dockerfile.jinja` **must** be multi-stage:
+  - Stage 1 (`builder`): Based on `ghcr.io/astral-sh/uv:bookworm-slim` with build cache mount `/root/.cache/uv`.
+  - Stage 2 (`runner`): Based on `python:slim-bookworm`.
+  - **Non-root User**: Create user `appuser` (`UID 10001:GID 10001`) and execute all processes as `USER appuser`.
+  - **Healthcheck**: Include native `HEALTHCHECK` for `api-service`.
 
-- `Dockerfile.jinja` **wajib** multi-stage:
-  - Stage 1 (`builder`): berbasis `ghcr.io/astral-sh/uv:bookworm-slim`, menggunakan cache mount `/root/.cache/uv`.
-  - Stage 2 (`runner`): berbasis `python:slim-bookworm`.
-  - **Non-root User**: Wajib membuat `appuser` (UID 10001, GID 10001) dan menjalankan proses sebagai `USER appuser`.
-  - **HEALTHCHECK**: Wajib menyertakan instruksi `HEALTHCHECK` untuk arketipe `api-service`.
-
-### D. Keamanan & Secret Management
-
-- `.env` tidak boleh di-commit ke repositori Git. Selalu sediakan `.env.example.jinja`.
-- Task `task setup` harus memastikan `test -f .env || cp .env.example .env`.
-- Task `task audit:deps` wajib memanggil `uv run pip-audit`.
-- Task `task audit:sast` wajib memanggil `uv run bandit -r src/ -c pyproject.toml`.
+### D. Security & Secret Management
+- `.env` must never be committed. Always provide `.env.example.jinja`.
+- Task `task setup` must verify: `test -f .env || cp .env.example .env`.
+- Task `task audit:deps` must execute: `uv run pip-audit`.
+- Task `task audit:sast` must execute: `uv run bandit -r src/ -c pyproject.toml`.
 
 ---
 
-## 4. Runbook Pengujian & Verifikasi Template
+## 4. Verification & Testing Runbook
 
-Ketika Anda melakukan modifikasi pada `copier.yml` atau file di `template/`:
+When modifying `copier.yml` or files under `template/`:
 
-1. **Uji Render Template Lokal**:
-
+1. **Test Rendering**:
+   Use the maintainer task runner:
    ```bash
-   # Buat folder sementara di luar template
+   task test:render:all
+   ```
+   Or manually test render a single archetype:
+   ```bash
    uvx copier copy --defaults --data project_name="test-api" --data project_archetype="api-service" . /tmp/test-api
    ```
-
-2. **Validasi Project Generated**:
-
+2. **Validate Generated Project**:
    ```bash
    cd /tmp/test-api
    task setup
    task check:all
    ```
-
-3. **Bersihkan Folder Uji**:
-   Hapus `/tmp/test-api` setelah selesai pengujian. Jangan commit folder uji ke dalam git.
+3. **Clean Up**:
+   ```bash
+   task clean
+   ```
 
 ---
 
-## 5. Konvensi Prompt & Interaksi dengan User
+## 5. User Interaction Protocols
 
-- Bila user meminta menambahkan fitur pada template (misalnya support GraphQL, Celery, atau PostgreSQL async):
-  1. Periksa apakah fitur tersebut relevan untuk semua arketipe atau spesifik ke arketipe tertentu.
-  2. Tambahkan conditional Jinja `{% if ... %}` di `pyproject.toml.jinja`, `Taskfile.yml.jinja`, dan `template/src/`.
-  3. Perbarui opsi di `copier.yml`.
-  4. Perbarui dokumentasi di `README.md` dan panduan skill di `.agents/skills/`.
+- When the user asks to add new capabilities to the template:
+  1. Determine if the capability is universal or archetype-specific.
+  2. Guard archetype-specific code with Jinja conditionals `{% if project_archetype == '...' %}`.
+  3. Keep `copier.yml`, `README.md`, and `.agents/skills/` synchronized with the new options.

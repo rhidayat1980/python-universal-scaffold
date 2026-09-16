@@ -2,7 +2,7 @@ version: '3'
 
 tasks:
   setup:
-    desc: "Inisialisasi environment lokal, copy .env, dan sync dependencies"
+    desc: "Initialize local environment, copy .env, and sync dependencies"
     cmds:
       - test -f .env || cp .env.example .env
       - uv sync
@@ -14,78 +14,78 @@ tasks:
 
 {% if project_archetype == 'api-service' %}
   dev:
-    desc: "Jalankan dev server FastAPI dengan hot-reload"
+    desc: "Run FastAPI dev server with auto-reload"
     cmd: uv run uvicorn {{ package_name }}.main:app --reload --host 0.0.0.0 --port 8000
 
 {% if include_database %}
   db:migrate:
-    desc: "Terapkan migrasi database"
+    desc: "Apply database migrations"
     cmd: uv run alembic upgrade head
 
   db:makemigrations:
-    desc: "Buat revisi migrasi baru (gunakan CLI_ARGS untuk pesan)"
-    cmd: uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+    desc: "Create new migration revision (use CLI_ARGS for message)"
+    cmd: uv run alembic revision --autogenerate -m "{% raw %}{{.CLI_ARGS}}{% endraw %}"
 {% endif %}
 {% elif project_archetype == 'data-analytics' %}
   notebook:
-    desc: "Buka Jupyter Lab"
+    desc: "Open JupyterLab environment"
     cmd: uv run jupyter lab --ip 0.0.0.0
 
   run:
-    desc: "Eksekusi pipeline transformasi data"
+    desc: "Execute data transformation pipeline"
     cmd: uv run python -m {{ package_name }}.pipelines.transform
 {% elif project_archetype == 'ai-ml' %}
   train:
-    desc: "Mulai script training model"
+    desc: "Start model training script"
     cmd: uv run python -m {{ package_name }}.training.train
 
   eval:
-    desc: "Jalankan evaluasi model / inference"
+    desc: "Run model evaluation / inference"
     cmd: uv run python -m {{ package_name }}.inference
 {% elif project_archetype == 'pipeline-worker' %}
   worker:
-    desc: "Jalankan async worker consumer"
+    desc: "Run async worker consumer"
     cmd: uv run python -m {{ package_name }}.worker
 {% elif project_archetype == 'cli-tool' %}
   run:
-    desc: "Jalankan CLI tool secara lokal"
-    cmd: uv run python -m {{ package_name }}.cli {{.CLI_ARGS}}
+    desc: "Run CLI tool locally"
+    cmd: uv run python -m {{ package_name }}.cli {% raw %}{{.CLI_ARGS}}{% endraw %}
 {% elif project_archetype == 'library-package' %}
   build:
-    desc: "Build distribusi wheel dan sdist"
+    desc: "Build wheel and sdist distribution packages"
     cmd: uv build
 {% endif %}
 
   test:
-    desc: "Jalankan unit tests dan test coverage"
+    desc: "Run unit tests and test coverage"
     cmd: uv run pytest --cov=src/{{ package_name }} --cov-report=term-missing
 
   typecheck:
-    desc: "Validasi static type safety menggunakan Pyright"
+    desc: "Validate static type safety using Pyright"
     cmd: uv run pyright
 
   lint:
-    desc: "Validasi linting dan formatting dengan Ruff"
+    desc: "Check linting and formatting with Ruff"
     cmds:
       - uv run ruff check .
       - uv run ruff format --check .
 
   fix:
-    desc: "Auto-format dan auto-fix linting issues"
+    desc: "Auto-format and fix lint issues"
     cmds:
       - uv run ruff format .
       - uv run ruff check --fix .
 
   audit:deps:
-    desc: "Audit kerentanan CVE pada third-party dependencies"
+    desc: "Audit third-party dependencies for CVEs"
     cmd: uv run pip-audit
 
   audit:sast:
-    desc: "Static Application Security Testing (SAST) menggunakan Bandit"
+    desc: "Static Application Security Testing (SAST) using Bandit"
     cmd: uv run bandit -r src/ -c pyproject.toml
 
   check:all:
-    desc: "Quality gate komprehensif (Lint + Typecheck + Test + Security)"
+    desc: "Comprehensive quality gate (Lint + Typecheck + Test + Security)"
     cmds:
       - task: lint
       - task: typecheck
@@ -95,11 +95,11 @@ tasks:
 
 {% if include_container %}
   docker:build:
-    desc: "Build Docker container image produksi"
+    desc: "Build production Docker container image"
     cmd: docker build -t {{ project_name }}:latest .
 
   docker:run:
-    desc: "Jalankan Docker container lokal"
+    desc: "Run Docker container locally"
 {% if project_archetype == 'api-service' %}
     cmd: docker run --rm -p 8000:8000 --env-file .env {{ project_name }}:latest
 {% else %}

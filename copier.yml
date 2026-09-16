@@ -1,27 +1,28 @@
 # copier.yml - Interactive Prompt Configuration for Python Universal Scaffold
 _min_copier_version: "9.0.0"
+_subdirectory: "template"
 
 project_name:
   type: str
-  help: "Nama proyek (kebab-case, misal: auth-service, churn-model, etl-pipeline)"
+  help: "Project name (kebab-case, e.g. auth-service, churn-model, etl-pipeline)"
   default: "python-service"
   validator: >-
     {% if not project_name | regex_search('^[a-z0-9]+(-[a-z0-9]+)*$') %}
-    Nama proyek harus kebab-case (huruf kecil, angka, dipisahkan tanda minus).
+    Project name must be kebab-case (lowercase letters, numbers, separated by hyphens).
     {% endif %}
 
 package_name:
   type: str
-  help: "Nama import package Python (snake_case)"
+  help: "Python import package name (snake_case)"
   default: "{{ project_name | replace('-', '_') }}"
   validator: >-
     {% if not package_name | regex_search('^[a-z_][a-z0-9_]*$') %}
-    Nama package harus snake_case yang valid untuk identifier Python.
+    Package name must be a valid Python identifier in snake_case.
     {% endif %}
 
 project_archetype:
   type: str
-  help: "Arketipe arsitektur dasar proyek"
+  help: "Base architecture archetype for the project"
   choices:
     - "api-service"      # FastAPI REST / Async API Service
     - "data-analytics"  # Polars, DuckDB, Jupyter & Data Pipelines
@@ -33,7 +34,7 @@ project_archetype:
 
 python_version:
   type: str
-  help: "Target versi runtime Python"
+  help: "Target Python runtime version"
   choices:
     - "3.12"
     - "3.13"
@@ -41,19 +42,19 @@ python_version:
 
 include_container:
   type: bool
-  help: "Sertakan Dockerfile multi-stage hardened (non-root UID 10001, uv cache)?"
+  help: "Include hardened multi-stage Dockerfile (non-root UID 10001, uv cache)?"
   default: true
   when: "{{ project_archetype != 'library-package' }}"
 
 include_database:
   type: bool
-  help: "Sertakan layer database async (SQLAlchemy 2.0 + asyncpg + Alembic)?"
+  help: "Include async database layer (SQLAlchemy 2.0 + asyncpg + Alembic)?"
   default: false
   when: "{{ project_archetype in ['api-service', 'pipeline-worker'] }}"
 
 compute_target:
   type: str
-  help: "Target komputasi akselerator untuk AI/ML"
+  help: "Hardware accelerator compute target for AI/ML"
   choices:
     - "cpu"
     - "cuda-12"
@@ -62,10 +63,10 @@ compute_target:
 
 author_name:
   type: str
-  help: "Nama Author / Maintainer"
+  help: "Author or maintainer full name"
   default: "Engineering Team"
 
 author_email:
   type: str
-  help: "Email Author / Maintainer"
+  help: "Author or maintainer email address"
   default: "dev@company.local"

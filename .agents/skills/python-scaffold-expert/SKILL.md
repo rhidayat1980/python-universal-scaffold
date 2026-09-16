@@ -20,13 +20,13 @@ This skill provides step-by-step guidance for an AI agent to generate, extend, o
 
 ## Scaffolding Procedures
 
-### 1. Generating a New Project Locally
+### 1. Generating a New Project
 
 ```bash
-# Basic interactive prompt
-uvx copier copy /path/to/python-universal-scaffold my-service
+# Basic interactive prompt via GitHub
+uvx copier copy gh:rhidayat1980/python-universal-scaffold my-service
 
-# Non-interactive / headless generation (useful for CI and agent automation)
+# Non-interactive / headless generation (ideal for CI and AI Agent automation)
 uvx copier copy \
   --data project_name="order-service" \
   --data package_name="order_service" \
@@ -34,7 +34,10 @@ uvx copier copy \
   --data python_version="3.12" \
   --data include_container=true \
   --data include_database=true \
-  /path/to/python-universal-scaffold order-service
+  gh:rhidayat1980/python-universal-scaffold order-service
+
+# (Optional) Using local clone during template development:
+# uvx copier copy /path/to/python-universal-scaffold my-service
 ```
 
 ### 2. Post-Generation Initialization
