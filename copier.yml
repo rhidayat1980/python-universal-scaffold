@@ -1,6 +1,7 @@
 # copier.yml - Interactive Prompt Configuration for Python Universal Scaffold
 _min_copier_version: "9.0.0"
 _subdirectory: "template"
+_answers_file: ".copier-answers.yml"
 _exclude:
   - "{% if project_archetype != 'data-analytics' %}data{% endif %}"
   - "{% if project_archetype != 'data-analytics' %}notebooks{% endif %}"
