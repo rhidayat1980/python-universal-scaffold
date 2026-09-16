@@ -80,6 +80,42 @@ task check:all
 
 ---
 
+## 📦 Mengelola Dependensi dengan `uv`
+
+Jika proyek Anda membutuhkan library tambahan yang belum disediakan oleh scaffolder:
+
+### 1. Menambah Library Produksi (Runtime Dependency)
+Gunakan `uv add <nama-package>`. Perintah ini otomatis memperbarui `pyproject.toml`, meng-update `uv.lock`, dan menginstall ke `.venv`:
+```bash
+# Contoh: Menambahkan library HTTP client atau payment SDK
+uv add httpx stripe
+
+# Contoh: Menambahkan dengan batasan versi spesifik
+uv add "redis>=5.0.0"
+```
+
+### 2. Menambah Library Khusus Development / Testing
+Gunakan flag `--dev` agar dependensi tidak terbawa ke Docker image production:
+```bash
+# Contoh: Menambahkan Faker atau Factory-Boy untuk mocking data test
+uv add --dev faker factory-boy
+```
+
+### 3. Menghapus Library
+```bash
+uv remove stripe
+```
+
+### 4. Sinkronisasi Ulang Environment
+Jika Anda menarik perubahan (`git pull`) dari rekan tim lain yang mengubah dependensi:
+```bash
+task setup
+# Atau langsung via uv:
+uv sync
+```
+
+---
+
 ## 🛡 Quality Gate & Testing
 
 Run all quality and security validations before committing changes:

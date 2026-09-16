@@ -220,6 +220,42 @@ task docker:run         # Run production container locally
 
 ---
 
+## 📦 Managing Dependencies with `uv`
+
+When your application requires additional third-party packages not included in the initial archetype:
+
+### 1. Adding Production Runtime Dependencies
+Use `uv add <package-name>`. This automatically updates `pyproject.toml`, refreshes `uv.lock`, and installs the package into `.venv/` in milliseconds:
+```bash
+# Add payment SDKs, HTTP clients, or specific tools
+uv add httpx stripe
+
+# Pin or specify version constraints
+uv add "redis>=5.0.0" "celery[redis]>=5.4.0"
+```
+
+### 2. Adding Development / Testing Dependencies
+Use the `--dev` flag to ensure development packages are never bundled into the production container:
+```bash
+# Add mock frameworks or test data generators
+uv add --dev faker factory-boy freezegun
+```
+
+### 3. Removing Dependencies
+```bash
+uv remove stripe
+```
+
+### 4. Resyncing After Git Pulls
+When pulling changes made by other team members:
+```bash
+task setup
+# Or directly via uv:
+uv sync
+```
+
+---
+
 ## 🛡 DevSecOps & Observability by Default
 
 ### 1. Hardened Docker Containers
