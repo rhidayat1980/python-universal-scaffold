@@ -98,16 +98,16 @@ uvx copier copy gh:rhidayat1980/python-universal-scaffold my-new-service
 
 ### Step 2: Answer the Interactive Prompts
 
-### Step 2: Answer the Interactive Prompts
+> 💡 **Zero Prompt Boilerplate**: You don't need to specify `project_name` or `package_name`. Copier automatically infers `project_name` (e.g. `my-new-service`) and snake_case `package_name` (e.g. `my_new_service`) directly from your destination folder name!
 
-Copier automatically derives your `project_name` and `package_name` directly from your target folder name, and will prompt you with the remaining configuration options:
+The generator only prompts you for the architectural decisions:
 
 | Prompt | Description | Default | Example Options |
 | :--- | :--- | :--- | :--- |
 | `project_archetype` | Architecture domain archetype | `api-service` | `api-service`, `data-analytics`, `ai-ml`, `pipeline-worker`, `cli-tool`, `library-package` |
 | `python_version` | Target Python runtime | `3.12` | `3.10`, `3.11`, `3.12`, `3.13` |
 | `include_container` | Include hardened multi-stage Dockerfile | `true` | `true`, `false` |
-| `include_database` | Include async SQLAlchemy 2.0 + Alembic | `false` | `true`, `false` *(API / Worker only)* |
+| `include_database` | Include async SQLAlchemy 2.0 + Alembic & PostgreSQL compose | `false` | `true`, `false` *(API / Worker only)* |
 | `compute_target` | Hardware compute accelerator for AI/ML | `cpu` | `cpu`, `cuda-12` *(AI/ML only)* |
 | `author_name` | Maintainer full name | `Engineering Team` | `Jane Doe` |
 | `author_email` | Maintainer email address | `dev@company.local` | `jane@company.com` |
