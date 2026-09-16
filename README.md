@@ -12,7 +12,6 @@
 
 [Assumptions & Starting Point](#-assumptions--starting-point) • [Prerequisites](#-prerequisites) • [Step-by-Step Guide](#-step-by-step-guide-from-scratch) • [Archetypes](#-the-6-production-archetypes) • [Commands](#-developer-workflow--commands) • [DevSecOps](#-devsecops--observability-by-default) • [AI Agents](#-ai-agent-ready)
 
-
 ---
 
 ## 🎯 Assumptions & Starting Point
@@ -170,12 +169,12 @@ This single command executes:
 
 | Archetype | Description & Tech Stack | Core Files in `src/<pkg>/` | Primary Task Command |
 | :--- | :--- | :--- | :--- |
-| **`api-service`** | Production REST / Async Web API with **FastAPI**, **Uvicorn**, **Pydantic v2**, and optional async **SQLAlchemy 2.0 + Alembic**. | `main.py`<br>`api/routes.py`<br>`schemas/`<br>`db/session.py` | `task dev` |
-| **`data-analytics`** | High-performance analytics & ETL engineering with **Polars**, **DuckDB**, **PyArrow**, and **JupyterLab**. | `pipelines/transform.py`<br>`queries/metrics.sql`<br>`notebooks/01_exploration.ipynb` | `task notebook`<br>`task run` |
-| **`ai-ml`** | Deep learning and LLM fine-tuning pipelines using **PyTorch** (CPU / CUDA-12), **HuggingFace Hub**, and **NumPy 2.0**. | `training/train.py`<br>`inference.py`<br>`models/`, `datasets/` | `task train`<br>`task eval` |
-| **`pipeline-worker`** | Resilient async background consumer with **Redis**, **Tenacity** exponential retries, and **Structlog**. | `worker.py`<br>`tasks.py` | `task worker` |
+| **`api-service`** | Production REST / Async Web API with **FastAPI**, **Uvicorn**, **Pydantic v2**, and optional async **SQLAlchemy 2.0 + Alembic**. | `main.py`, `api/routes.py`, `schemas/`, `db/session.py` | `task dev` |
+| **`data-analytics`** | High-performance analytics & ETL engineering with **Polars**, **DuckDB**, **PyArrow**, and **JupyterLab**. | `pipelines/transform.py`, `queries/metrics.sql`, `notebooks/01_exploration.ipynb` | `task notebook`, `task run` |
+| **`ai-ml`** | Deep learning and LLM fine-tuning pipelines using **PyTorch** (CPU / CUDA-12), **HuggingFace Hub**, and **NumPy 2.0**. | `training/train.py`, `inference.py`, `models/`, `datasets/` | `task train`, `task eval` |
+| **`pipeline-worker`** | Resilient async background consumer with **Redis**, **Tenacity** exponential retries, and **Structlog**. | `worker.py`, `tasks.py` | `task worker` |
 | **`cli-tool`** | Modern interactive terminal application powered by **Typer** and visual tables with **Rich**. | `cli.py` | `task run -- --help` |
-| **`library-package`** | Zero-dependency reusable distribution package built with **Hatchling**, PEP 561 typing (`py.typed`), and custom exceptions. | `core.py`<br>`exceptions.py` | `task build` |
+| **`library-package`** | Zero-dependency reusable distribution package built with **Hatchling**, PEP 561 typing (`py.typed`), and custom exceptions. | `core.py`, `exceptions.py` | `task build` |
 
 ---
 
