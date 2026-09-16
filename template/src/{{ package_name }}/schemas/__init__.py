@@ -1,6 +1,6 @@
 """Pydantic schemas and DTOs."""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class BaseResponse(BaseModel):

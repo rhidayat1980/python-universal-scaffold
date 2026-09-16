@@ -3,7 +3,8 @@
 import pytest
 
 {% if project_archetype == 'api-service' %}
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
+
 from {{ package_name }}.main import app
 
 
