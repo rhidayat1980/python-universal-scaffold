@@ -10,7 +10,7 @@
 [![DevSecOps](https://img.shields.io/badge/Security-Bandit%20%2B%20pip--audit-2ea44f?logo=security&logoColor=white)](https://github.com/PyCQA/bandit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[Assumptions & Starting Point](#-assumptions--starting-point) • [Prerequisites](#-prerequisites) • [Step-by-Step Guide](#-step-by-step-guide-from-scratch) • [Archetypes](#-the-6-production-archetypes) • [Commands](#-developer-workflow--commands) • [DevSecOps](#-devsecops--observability-by-default) • [AI Agents](#-ai-agent-ready)
+[Assumptions & Starting Point](#assumptions--starting-point) • [Prerequisites](#prerequisites) • [Step-by-Step Guide](#step-by-step-guide-from-scratch-to-running) • [Archetypes](#the-6-production-archetypes) • [Commands](#developer-workflow--commands) • [DevSecOps](#devsecops--observability-by-default) • [AI Agents](#ai-agent-ready)
 
 ---
 
