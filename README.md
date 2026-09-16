@@ -1,3 +1,5 @@
+<div align="center">
+
 # 🚀 Python Universal Scaffold
 
 **A Production-Grade, Multi-Archetype Python Project Generator**  
@@ -9,6 +11,9 @@
 [![Copier](https://img.shields.io/badge/Scaffolding-Copier-FF7139?logo=jinja&logoColor=white)](https://copier.readthedocs.io)
 [![DevSecOps](https://img.shields.io/badge/Security-Bandit%20%2B%20pip--audit-2ea44f?logo=security&logoColor=white)](https://github.com/PyCQA/bandit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+</div>
+
 ---
 
 ## 📑 Table of Contents
