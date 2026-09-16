@@ -207,6 +207,9 @@ Every generated project includes a standardized `Taskfile.yml` so you never have
 
 ```bash
 task setup              # Initialize .env and synchronize dependencies into .venv
+task services:up        # Spin up local development services (PostgreSQL / Redis) via Docker Compose
+task services:logs      # Follow logs of local services
+task services:down      # Stop and tear down local development services
 task test               # Run Pytest test suite with terminal coverage report
 task typecheck          # Validate static type safety with Pyright
 task lint               # Check formatting and style rules with Ruff

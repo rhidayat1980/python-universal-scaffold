@@ -143,10 +143,29 @@ task audit:sast
 task check:all
 ```
 
+{% if include_database or project_archetype == 'pipeline-worker' %}
+---
+
+## 🐘 Local Infrastructure (Docker Compose)
+
+Jalankan layanan pendukung lokal (PostgreSQL / Redis) dengan perintah sederhana:
+
+```bash
+# Nyalakan PostgreSQL / Redis di background
+task services:up
+
+# Cek status dan log container layanan pendukung
+task services:logs
+
+# Matikan layanan pendukung setelah selesai bekerja
+task services:down
+```
+{% endif %}
+
 {% if include_container %}
 ---
 
-## 🐳 Docker Container
+## 🐳 Docker Container (Production Image)
 
 ```bash
 # Build production Docker image (non-root UID 10001)

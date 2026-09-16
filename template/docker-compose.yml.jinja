@@ -1,0 +1,46 @@
+services:
+{%- if include_database %}
+  db:
+    image: postgres:16-alpine
+    container_name: {{ project_name }}-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: {{ package_name }}_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d {{ package_name }}_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+{%- endif %}
+
+{%- if project_archetype == 'pipeline-worker' %}
+  redis:
+    image: redis:7-alpine
+    container_name: {{ project_name }}-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+{%- endif %}
+
+volumes:
+{%- if include_database %}
+  postgres_data:
+    driver: local
+{%- endif %}
+{%- if project_archetype == 'pipeline-worker' %}
+  redis_data:
+    driver: local
+{%- endif %}

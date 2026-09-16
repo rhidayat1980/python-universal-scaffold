@@ -100,6 +100,20 @@ tasks:
     desc: "Update project with latest improvements from template repository"
     cmd: uvx copier update
 
+{% if include_database or project_archetype == 'pipeline-worker' %}
+  services:up:
+    desc: "Start background services (PostgreSQL / Redis) with Docker Compose"
+    cmd: docker compose up -d
+
+  services:down:
+    desc: "Stop background services (PostgreSQL / Redis)"
+    cmd: docker compose down
+
+  services:logs:
+    desc: "Follow logs of background services"
+    cmd: docker compose logs -f
+{% endif %}
+
 {% if include_container %}
   docker:build:
     desc: "Build production Docker container image"

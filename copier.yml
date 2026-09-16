@@ -23,6 +23,7 @@ _exclude:
   - "{% if project_archetype != 'library-package' %}src/**/exceptions.py*{% endif %}"
   - "{% if project_archetype == 'library-package' or not include_container %}Dockerfile*{% endif %}"
   - "{% if project_archetype == 'library-package' or not include_container %}.dockerignore{% endif %}"
+  - "{% if not include_database and project_archetype != 'pipeline-worker' %}docker-compose.yml*{% endif %}"
 
 project_name:
   type: str
