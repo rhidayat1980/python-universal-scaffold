@@ -248,14 +248,34 @@ This repository is tailored for autonomous AI programming assistants (**Antigrav
 
 ## 🔄 Keeping Projects Up-to-Date
 
-When new features or security enhancements are released in this template, update existing projects seamlessly without losing custom business logic:
+Because this scaffold is powered by Copier, you can seamlessly update existing projects with the latest template improvements, bugfixes, and security rules without losing any custom business logic.
+
+### Option A: From Inside Your Generated Project
+Navigate into your project folder and run:
 
 ```bash
-cd my-new-service
+# Pull and apply latest template updates via Taskfile
+task update:template
+
+# Or using Copier CLI directly
 copier update
 ```
 
-Copier computes a three-way Git diff, allowing you to review and merge template improvements effortlessly.
+### Option B: From Inside the Template Repository
+If you maintain projects alongside this scaffold repository, leverage the built-in maintainer tasks:
+
+```bash
+# Check if a project has pending template updates
+task check-update -- ../my-new-service
+
+# Update target project to the latest template version
+task update -- ../my-new-service
+
+# Recopy all template files into target project
+task recopy -- ../my-new-service
+```
+
+> **Note**: Copier computes an intelligent three-way Git diff, prompting you interactively only if there are conflict resolutions between template updates and your custom code.
 
 ---
 

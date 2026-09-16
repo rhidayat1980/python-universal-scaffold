@@ -2,49 +2,69 @@ version: '3'
 
 tasks:
   default:
-    desc: "List available maintainer tasks for the scaffold template"
+    desc: "List all available tasks"
     cmd: task --list
+
+  new:
+    desc: "Create a new project from this template (e.g., task new -- ../my-service)"
+    cmd: copier copy . {{.CLI_ARGS | default "../my-new-project"}}
+
+  create:
+    desc: "Alias for 'task new'"
+    cmd: task new -- {{.CLI_ARGS}}
+
+  update:
+    desc: "Update an existing generated project to latest template (e.g., task update -- ../my-service)"
+    cmd: copier update {{.CLI_ARGS}}
+
+  recopy:
+    desc: "Recopy an existing project from template (e.g., task recopy -- ../my-service)"
+    cmd: copier recopy {{.CLI_ARGS}}
+
+  check-update:
+    desc: "Check if a project has pending template updates (e.g., task check-update -- ../my-service)"
+    cmd: copier check-update {{.CLI_ARGS}}
 
   test:render:api:
     desc: "Test render FastAPI service archetype"
     cmds:
       - rm -rf /tmp/test-api-service
-      - uvx copier copy --defaults --data project_name="test-api-service" --data project_archetype="api-service" . /tmp/test-api-service
+      - copier copy --defaults --data project_name="test-api-service" --data project_archetype="api-service" . /tmp/test-api-service
       - echo "Rendered api-service successfully to /tmp/test-api-service"
 
   test:render:analytics:
     desc: "Test render Data Analytics archetype"
     cmds:
       - rm -rf /tmp/test-analytics
-      - uvx copier copy --defaults --data project_name="test-analytics" --data project_archetype="data-analytics" . /tmp/test-analytics
+      - copier copy --defaults --data project_name="test-analytics" --data project_archetype="data-analytics" . /tmp/test-analytics
       - echo "Rendered data-analytics successfully to /tmp/test-analytics"
 
   test:render:ml:
     desc: "Test render AI/ML archetype"
     cmds:
       - rm -rf /tmp/test-ml
-      - uvx copier copy --defaults --data project_name="test-ml" --data project_archetype="ai-ml" . /tmp/test-ml
+      - copier copy --defaults --data project_name="test-ml" --data project_archetype="ai-ml" . /tmp/test-ml
       - echo "Rendered ai-ml successfully to /tmp/test-ml"
 
   test:render:worker:
     desc: "Test render Pipeline Worker archetype"
     cmds:
       - rm -rf /tmp/test-worker
-      - uvx copier copy --defaults --data project_name="test-worker" --data project_archetype="pipeline-worker" . /tmp/test-worker
+      - copier copy --defaults --data project_name="test-worker" --data project_archetype="pipeline-worker" . /tmp/test-worker
       - echo "Rendered pipeline-worker successfully to /tmp/test-worker"
 
   test:render:cli:
     desc: "Test render CLI Tool archetype"
     cmds:
       - rm -rf /tmp/test-cli
-      - uvx copier copy --defaults --data project_name="test-cli" --data project_archetype="cli-tool" . /tmp/test-cli
+      - copier copy --defaults --data project_name="test-cli" --data project_archetype="cli-tool" . /tmp/test-cli
       - echo "Rendered cli-tool successfully to /tmp/test-cli"
 
   test:render:library:
     desc: "Test render Library Package archetype"
     cmds:
       - rm -rf /tmp/test-library
-      - uvx copier copy --defaults --data project_name="test-library" --data project_archetype="library-package" . /tmp/test-library
+      - copier copy --defaults --data project_name="test-library" --data project_archetype="library-package" . /tmp/test-library
       - echo "Rendered library-package successfully to /tmp/test-library"
 
   test:render:all:
@@ -59,6 +79,6 @@ tasks:
       - echo "All 6 archetypes rendered successfully without errors!"
 
   clean:
-    desc: "Clean up test rendered artifacts"
+    desc: "Clean up test rendered artifacts in /tmp"
     cmds:
       - rm -rf /tmp/test-api-service /tmp/test-analytics /tmp/test-ml /tmp/test-worker /tmp/test-cli /tmp/test-library

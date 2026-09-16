@@ -93,6 +93,10 @@ tasks:
       - task: audit:deps
       - task: audit:sast
 
+  update:template:
+    desc: "Update project with latest improvements from template repository"
+    cmd: copier update
+
 {% if include_container %}
   docker:build:
     desc: "Build production Docker container image"
