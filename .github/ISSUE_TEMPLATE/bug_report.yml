@@ -1,0 +1,72 @@
+name: "🐛 Bug Report"
+description: "Report a bug or template rendering error in Python Universal Scaffold"
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue! Please provide as much detail as possible to help us diagnose and fix the problem.
+
+  - type: dropdown
+    id: archetype
+    attributes:
+      label: Affected Archetype
+      description: Which architecture archetype is experiencing the issue?
+      options:
+        - "api-service (FastAPI + SQLAlchemy)"
+        - "data-analytics (Polars + DuckDB)"
+        - "ai-ml (PyTorch + HuggingFace)"
+        - "pipeline-worker (Redis Consumer)"
+        - "cli-tool (Typer + Rich)"
+        - "library-package (Hatchling)"
+        - "Template Tooling / copier.yml"
+        - "All Archetypes"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: What Python version did you choose or are you running? (e.g., 3.12, 3.13)
+      placeholder: "3.13"
+    validations:
+      required: true
+
+  - type: input
+    id: os-environment
+    attributes:
+      label: Operating System / Environment
+      description: Where are you running this? (e.g., Ubuntu 22.04 on WSL2, macOS Sonoma, Debian 12)
+      placeholder: "Ubuntu 22.04 WSL2"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps
+      description: Exact commands executed to reproduce the bug.
+      placeholder: |
+        1. uvx copier copy gh:rhidayat1980/python-universal-scaffold test-app
+        2. cd test-app
+        3. task setup
+        4. task check:all -> Fails with ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Terminal Output / Error Logs
+      description: Paste relevant terminal logs or tracebacks here.
+      render: shell

@@ -1,0 +1,35 @@
+name: Template Verification CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-template:
+    name: Verify All 6 Archetypes Render
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Template Repository
+        uses: actions/checkout@v4
+
+      - name: Setup mise and developer tools
+        uses: jdx/mise-action@v2
+        with:
+          install: true
+
+      - name: Install Copier and Task
+        run: |
+          uv tool install copier --with jinja2-time
+          which task || mise use -g task@latest
+
+      - name: Run Maintainer Rendering Quality Gate
+        run: |
+          task test:render:all
+
+      - name: Clean up temporary test directories
+        if: always()
+        run: |
+          task clean

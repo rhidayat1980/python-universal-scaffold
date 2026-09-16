@@ -7,7 +7,8 @@
 **A Production-Grade, Multi-Archetype Python Project Generator**  
 *Engineered for modern engineering teams using **Copier**, **mise**, **uv**, **Taskfile**, and **DevSecOps Hardening**.*
 
-[![Python 3.12+](https://img.shields.io/badge/Python-3.12%20%7C%203.13-blue?logo=python&logoColor=white)](https://python.org)
+[![CI](https://github.com/rhidayat1980/python-universal-scaffold/actions/workflows/template-ci.yml/badge.svg)](https://github.com/rhidayat1980/python-universal-scaffold/actions/workflows/template-ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue?logo=python&logoColor=white)](https://python.org)
 [![uv](https://img.shields.io/badge/Package%20Manager-Astral%20uv-6E40C9?logo=dependabot&logoColor=white)](https://astral.sh/uv)
 [![mise](https://img.shields.io/badge/Runtime-mise-007ACC?logo=gnu-bash&logoColor=white)](https://mise.jdx.dev)
 [![Copier](https://img.shields.io/badge/Scaffolding-Copier-FF7139?logo=jinja&logoColor=white)](https://copier.readthedocs.io)
@@ -28,6 +29,7 @@
 - [DevSecOps & Observability by Default](#devsecops--observability-by-default)
 - [AI Agent Ready](#ai-agent-ready)
 - [Keeping Projects Up-to-Date](#keeping-projects-up-to-date)
+- [Contributing & Community](#-contributing--community)
 - [Roadmap](#-roadmap)
 - [License](#-license)
 
@@ -39,7 +41,7 @@ Before using this scaffold generator, understand the foundational design philoso
 
 ### 1. Key Assumptions
 
-- **Modern Python Only**: This scaffold assumes **Python 3.12 or 3.13**. Legacy Python (<=3.11) is intentionally unsupported to leverage modern type syntax, fast asyncio, and performance gains.
+- **Modern Python Standards**: This scaffold supports **Python 3.10, 3.11, 3.12, or 3.13**, ensuring full backward compatibility for enterprise data/ML teams while supporting bleeding-edge Python 3.13 features.
 - **Zero Host Pollution**: You should **never** install application packages globally or use standard `pip install`. Every project manages its own hermetic virtual environment (`.venv/`) via `uv`.
 - **Reproducible Runtimes**: We assume tool versions (`uv`, `go-task`, `python`) should be locked per-project to guarantee that code runs identically on Linux, macOS, WSL2, and CI/CD pipelines.
 - **Strict `src/` Layout**: All source code is placed inside `src/<package_name>/`. Flat layouts are avoided to prevent packaging ambiguities and import side-effects.
@@ -348,6 +350,18 @@ task recopy -- ../my-new-service
 ```
 
 > **Note**: Copier computes an intelligent three-way Git diff, prompting you interactively only if there are conflict resolutions between template updates and your custom code.
+
+---
+
+## 🤝 Contributing & Community
+
+Contributions are what make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**!
+
+- 📖 **Contributing Guide**: Please review our [CONTRIBUTING.md](CONTRIBUTING.md) for local testing instructions and PR guidelines.
+- 📜 **Code of Conduct**: We are committed to providing a welcoming and inspiring community. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+- 🛡️ **Security Policy**: For responsible vulnerability disclosure, please refer to [SECURITY.md](SECURITY.md).
+- 🐛 **Report a Bug**: Found a bug or template issue? Open a [Bug Report](https://github.com/rhidayat1980/python-universal-scaffold/issues/new?template=bug_report.yml).
+- 💡 **Request a Feature**: Have an archetype or toolchain idea? Submit a [Feature Request](https://github.com/rhidayat1980/python-universal-scaffold/issues/new?template=feature_request.yml).
 
 ---
 

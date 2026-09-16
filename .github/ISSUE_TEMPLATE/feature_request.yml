@@ -1,0 +1,42 @@
+name: "💡 Feature Request"
+description: "Suggest a new archetype, toolchain integration, or platform enhancement"
+title: "[FEAT]: "
+labels: ["enhancement", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We are always eager to expand the Python Golden Path ecosystem! Please outline your proposal below.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Motivation
+      description: Is your feature request related to a problem or developer pain point? Please describe.
+      placeholder: "Setting up gRPC microservices with Protobuf in Python currently requires manual boilerplate..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution / Archetype
+      description: Describe the solution you'd like to see implemented.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tech-stack
+    attributes:
+      label: Suggested Tooling & Libraries
+      description: Which modern Python libraries should power this feature? (e.g. grpcio, Litestar, Prefect)
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any alternative solutions or workarounds you've evaluated?
+    validations:
+      required: false
