@@ -26,21 +26,13 @@ _exclude:
 
 project_name:
   type: str
-  help: "Project name (kebab-case, e.g. auth-service, churn-model, etl-pipeline)"
-  default: "python-service"
-  validator: >-
-    {% if not project_name | regex_search('^[a-z0-9]+(-[a-z0-9]+)*$') %}
-    Project name must be kebab-case (lowercase letters, numbers, separated by hyphens).
-    {% endif %}
+  default: "{{ _copier_conf.dst_path.name }}"
+  when: false
 
 package_name:
   type: str
-  help: "Python import package name (snake_case)"
   default: "{{ project_name | replace('-', '_') }}"
-  validator: >-
-    {% if not package_name | regex_search('^[a-z_][a-z0-9_]*$') %}
-    Package name must be a valid Python identifier in snake_case.
-    {% endif %}
+  when: false
 
 project_archetype:
   type: str
