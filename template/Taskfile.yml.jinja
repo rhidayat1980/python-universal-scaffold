@@ -98,7 +98,7 @@ tasks:
 
   update:template:
     desc: "Update project with latest improvements from template repository"
-    cmd: copier update
+    cmd: uvx copier update
 
 {% if include_container %}
   docker:build:
