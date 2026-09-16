@@ -28,7 +28,8 @@
 - [DevSecOps & Observability by Default](#devsecops--observability-by-default)
 - [AI Agent Ready](#ai-agent-ready)
 - [Keeping Projects Up-to-Date](#keeping-projects-up-to-date)
-- [License](#license)
+- [Roadmap](#-roadmap)
+- [License](#-license)
 
 ---
 
@@ -278,6 +279,12 @@ task recopy -- ../my-new-service
 ```
 
 > **Note**: Copier computes an intelligent three-way Git diff, prompting you interactively only if there are conflict resolutions between template updates and your custom code.
+
+---
+
+## 🗺️ Roadmap
+
+Interested in upcoming archetype expansions (`llm-rag-agent`, `grpc-service`, `fullstack-web`, `event-stream-consumer`, `serverless-function`) and platform features? Check out our dedicated [Roadmap](ROADMAP.md).
 
 ---
 
