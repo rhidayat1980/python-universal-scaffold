@@ -1,5 +1,3 @@
-<div align="center">
-
 # 🚀 Python Universal Scaffold
 
 **A Production-Grade, Multi-Archetype Python Project Generator**  
@@ -12,17 +10,8 @@
 [![DevSecOps](https://img.shields.io/badge/Security-Bandit%20%2B%20pip--audit-2ea44f?logo=security&logoColor=white)](https://github.com/PyCQA/bandit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-<p align="center">
-  <a href="#-assumptions--starting-point">Assumptions & Starting Point</a> •
-  <a href="#-prerequisites">Prerequisites</a> •
-  <a href="#-step-by-step-guide-from-scratch">Step-by-Step Guide</a> •
-  <a href="#-the-6-production-archetypes">Archetypes</a> •
-  <a href="#-developer-workflow--commands">Commands</a> •
-  <a href="#-devsecops--observability">DevSecOps</a> •
-  <a href="#-ai-agent-ready">AI Agents</a>
-</p>
+[Assumptions & Starting Point](#-assumptions--starting-point) • [Prerequisites](#-prerequisites) • [Step-by-Step Guide](#-step-by-step-guide-from-scratch) • [Archetypes](#-the-6-production-archetypes) • [Commands](#-developer-workflow--commands) • [DevSecOps](#-devsecops--observability-by-default) • [AI Agents](#-ai-agent-ready)
 
-</div>
 
 ---
 
