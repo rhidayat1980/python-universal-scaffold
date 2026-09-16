@@ -18,14 +18,12 @@
 <br/>
 <br/>
 
-<img src="media/demo.svg" alt="Python Universal Scaffold Interactive Terminal Demo" width="100%"/>
-
 <p align="center">
-  <a href="https://asciinema.org/a/xRBPvAgU1AgZvOcy" target="_blank">
-    <img src="https://asciinema.org/a/xRBPvAgU1AgZvOcy.svg" alt="Asciinema Interactive Terminal Recording" width="220"/>
+  <a href="https://asciinema.org/a/xRBPvAgU1AgZvOcy" target="_blank" rel="noopener noreferrer">
+    <img src="https://asciinema.org/a/xRBPvAgU1AgZvOcy.svg" alt="Python Universal Scaffold Interactive Terminal Demo" width="100%"/>
   </a>
   <br/>
-  <em>Click badge above to play interactive terminal recording via browser</em>
+  <em>Click the terminal window above to play the full interactive recording in asciinema</em>
 </p>
 
 </div>
