@@ -19,10 +19,10 @@ _exclude:
   - "{% if project_archetype != 'pipeline-worker' %}src/**/worker.py*{% endif %}"
   - "{% if project_archetype != 'pipeline-worker' %}src/**/tasks.py*{% endif %}"
   - "{% if project_archetype != 'cli-tool' %}src/**/cli.py*{% endif %}"
-  - "{% if project_archetype != 'library-package' %}src/**/core.py*{% endif %}"
+  - "{% if project_archetype != 'library-package' %}src/**/client.py*{% endif %}"
   - "{% if project_archetype != 'library-package' %}src/**/exceptions.py*{% endif %}"
-  - "{% if not include_container %}Dockerfile*{% endif %}"
-  - "{% if not include_container %}.dockerignore{% endif %}"
+  - "{% if project_archetype == 'library-package' or not include_container %}Dockerfile*{% endif %}"
+  - "{% if project_archetype == 'library-package' or not include_container %}.dockerignore{% endif %}"
 
 project_name:
   type: str

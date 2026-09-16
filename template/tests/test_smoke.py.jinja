@@ -78,12 +78,12 @@ def test_cli_greet():
     assert "Developer" in result.stdout
 {%- elif project_archetype == 'library-package' %}
 
-from {{ package_name }}.core import execute_core_action
+from {{ package_name }}.client import execute_action
 
 
 def test_core_action(sample_payload):
     """Ensure library core function executes correctly."""
-    result = execute_core_action(sample_payload)
+    result = execute_action(sample_payload)
     assert result["status"] == "processed"
     assert result["keys_count"] == 2
 {%- endif %}
