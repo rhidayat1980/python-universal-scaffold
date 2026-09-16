@@ -6,56 +6,77 @@ Production-ready {{ project_archetype }} project built with modern isolated virt
 
 ---
 
-## ⚡ Quickstart
+## ⚡ Recommended Workflow (Urutan Eksekusi Task)
 
-### 1. Initialize Environment
+Setelah proyek selesai di-generate, ikuti alur eksekusi task standar berikut:
+
+```text
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  task setup  │ ──> │   task dev   │ ──> │   task fix   │ ──> │task check:all│
+│(Init & Sync) │     │ (Development)│     │(Auto-format) │     │(Quality Gate)│
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+```
+
+### 1. Initialize Environment (Sekali di Awal)
 ```bash
-# Trust local directory configuration (if using mise)
+# Trust konfigurasi lokal mise (jika menggunakan mise)
 mise trust
 
-# Setup .env file and install dependencies into .venv
+# Inisialisasi .env dan install seluruh dependensi via uv sync
 task setup
 ```
 
-### 2. Run Service / Workflow
+### 2. Run Local Development (Saat Coding)
 {% if project_archetype == 'api-service' %}
 ```bash
-# Start FastAPI dev server with auto-reload (port 8000)
+# Jalankan FastAPI dev server dengan hot reload (port 8000)
 task dev
 ```
-Open interactive Swagger UI docs at: `http://localhost:8000/docs`
+Buka dokumentasi interaktif OpenAPI Swagger UI di: `http://localhost:8000/docs`
 {% elif project_archetype == 'data-analytics' %}
 ```bash
-# Launch JupyterLab environment
+# Buka lingkungan JupyterLab
 task notebook
 
-# Execute data extraction & transformation pipeline
+# Jalankan data pipeline extraction & transformation
 task run
 ```
 {% elif project_archetype == 'ai-ml' %}
 ```bash
-# Start model training loop
+# Jalankan model training loop
 task train
 
-# Run model evaluation / inference script
+# Jalankan model inference / evaluation
 task eval
 ```
 {% elif project_archetype == 'pipeline-worker' %}
 ```bash
-# Run background task queue worker
+# Jalankan background task worker
 task worker
 ```
 {% elif project_archetype == 'cli-tool' %}
 ```bash
-# Execute local CLI tool
+# Jalankan tool CLI lokal
 task run -- --help
 ```
 {% elif project_archetype == 'library-package' %}
 ```bash
-# Build wheel and sdist distribution packages
+# Build paket wheel dan sdist
 task build
 ```
 {% endif %}
+
+### 3. Format & Auto-Fix Code (Sebelum Commit)
+```bash
+# Merapikan formatting dan auto-fix isu linting dengan Ruff
+task fix
+```
+
+### 4. Quality Gate & DevSecOps Verification (Wajib Lulus Sebelum Push)
+```bash
+# Menjalankan 5 quality gate sekaligus (Lint + Typecheck + Test + Bandit SAST + pip-audit)
+task check:all
+```
 
 ---
 

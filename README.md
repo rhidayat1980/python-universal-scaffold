@@ -98,14 +98,14 @@ uvx copier copy gh:rhidayat1980/python-universal-scaffold my-new-service
 
 ### Step 2: Answer the Interactive Prompts
 
-Copier will prompt you with the following configuration options:
+### Step 2: Answer the Interactive Prompts
+
+Copier automatically derives your `project_name` and `package_name` directly from your target folder name, and will prompt you with the remaining configuration options:
 
 | Prompt | Description | Default | Example Options |
 | :--- | :--- | :--- | :--- |
-| `project_name` | The repository/folder name in kebab-case | `python-service` | `billing-api`, `fraud-detector` |
-| `package_name` | Python module import name (snake_case) | *(Derived from project name)* | `billing_api`, `fraud_detector` |
 | `project_archetype` | Architecture domain archetype | `api-service` | `api-service`, `data-analytics`, `ai-ml`, `pipeline-worker`, `cli-tool`, `library-package` |
-| `python_version` | Target Python runtime | `3.12` | `3.12`, `3.13` |
+| `python_version` | Target Python runtime | `3.12` | `3.10`, `3.11`, `3.12`, `3.13` |
 | `include_container` | Include hardened multi-stage Dockerfile | `true` | `true`, `false` |
 | `include_database` | Include async SQLAlchemy 2.0 + Alembic | `false` | `true`, `false` *(API / Worker only)* |
 | `compute_target` | Hardware compute accelerator for AI/ML | `cpu` | `cpu`, `cuda-12` *(AI/ML only)* |
@@ -127,60 +127,64 @@ mise trust
 
 ---
 
-### Step 4: One-Click Environment Setup
+### Step 4: Recommended Task Execution Workflow
 
-Run the unified setup task:
+Every generated project adheres to a strict, standardized execution workflow:
 
+```text
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  task setup  │ ──> │   task dev   │ ──> │   task fix   │ ──> │task check:all│
+│(Init & Sync) │     │ (Development)│     │(Auto-format) │     │(Quality Gate)│
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+```
+
+#### 1. Inisialisasi Environment (Sekali di awal)
 ```bash
 task setup
 ```
+Perintah ini otomatis:
+1. Membuat file konfigurasi lokal `.env` dari `.env.example`.
+2. Menyiapkan virtual environment `.venv/`.
+3. Menginstal dan mengunci seluruh dependensi via `uv sync`.
 
-This task automatically:
-
-1. Creates a local `.env` configuration file from `.env.example` (if not already present).
-2. Provisions a dedicated `.venv/` virtual environment.
-3. Installs and locks all runtime and development dependencies deterministically via `uv sync`.
-
----
-
-### Step 5: Start Developing
-
-Launch your workload according to the chosen archetype:
-
+#### 2. Menjalankan Workload Lokal (Saat Coding)
+Jalankan command sesuai arketipe yang Anda pilih:
 ```bash
-# If api-service (FastAPI on http://localhost:8000)
+# Jika api-service (FastAPI di http://localhost:8000)
 task dev
 
-# If data-analytics (JupyterLab exploration)
+# Jika data-analytics (JupyterLab exploration)
 task notebook
 
-# If ai-ml (Model training loop)
+# Jika ai-ml (Model training loop)
 task train
 
-# If pipeline-worker (Background queue consumer)
+# Jika pipeline-worker (Background queue consumer)
 task worker
 
-# If cli-tool (Terminal command)
+# Jika cli-tool (Terminal command)
 task run -- --help
+
+# Jika library-package (Build distribution wheel)
+task build
 ```
 
----
+#### 3. Format & Auto-Fix Code (Sebelum Commit)
+```bash
+task fix
+```
+Merapikan indentasi, imports, dan otomatis memperbaiki isu linter dengan **Ruff**.
 
-### Step 6: Validate with the Quality Gate
-
-Before submitting any pull request or pushing code, run the full DevSecOps Quality Gate:
-
+#### 4. Quality Gate & DevSecOps Verification (Wajib Lulus Sebelum Push)
 ```bash
 task check:all
 ```
-
-This single command executes:
-
-- ✅ Code formatting & linting with **Ruff**
-- ✅ Strict static type validation with **Pyright**
-- ✅ Test suite execution with coverage report via **Pytest**
-- ✅ Third-party dependency vulnerability scanning via **pip-audit**
-- ✅ Source code security scanning (SAST) via **Bandit**
+Menjalankan 5 gerbang pengujian kualitas sekaligus:
+- ✅ Code formatting & linting (**Ruff**)
+- ✅ Strict static type validation (**Pyright**)
+- ✅ Unit & flow test coverage (**Pytest**)
+- ✅ Dependency CVE vulnerability scan (**pip-audit**)
+- ✅ SAST security code scan (**Bandit**)
 
 ---
 
