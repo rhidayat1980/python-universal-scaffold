@@ -30,8 +30,8 @@ tasks:
     cmd: vhs media/demo.tape
 
   demo:asciinema:
-    desc: "Record terminal session with asciinema (outputs to media/demo.cast)"
-    cmd: uvx asciinema rec media/demo.cast
+    desc: "Record declarative demo with asciinema (outputs to media/demo.cast)"
+    cmd: bash -c "chmod +x media/record-demo.sh && uvx asciinema rec -c media/record-demo.sh --overwrite media/demo.cast"
 
   test:render:api:
     desc: "Test render FastAPI service archetype"

@@ -2,7 +2,7 @@
 # Output: media/demo.gif
 # To generate: vhs media/demo.tape
 
-Output media/demo.gif
+Output demo.gif
 
 Set Shell "bash"
 Set FontSize 16
