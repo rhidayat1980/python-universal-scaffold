@@ -15,6 +15,11 @@
 [![DevSecOps](https://img.shields.io/badge/Security-Bandit%20%2B%20pip--audit-2ea44f?logo=security&logoColor=white)](https://github.com/PyCQA/bandit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<br/>
+<br/>
+
+<img src="media/demo.svg" alt="Python Universal Scaffold Interactive Terminal Demo" width="100%"/>
+
 </div>
 
 ---

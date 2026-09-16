@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e2e"/>
+      <stop offset="100%" stop-color="#181825"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <style>
+    .window { fill: url(#bgGrad); rx: 12px; filter: url(#shadow); }
+    .header-bar { fill: #11111b; rx: 12px 12px 0 0; }
+    .btn-red { fill: #f38ba8; }
+    .btn-yellow { fill: #f9e2af; }
+    .btn-green { fill: #a6e3a1; }
+    .title { fill: #cdd6f4; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; font-size: 14px; font-weight: 600; text-anchor: middle; }
+    .term-text { font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace; font-size: 14px; line-height: 1.6; }
+    .prompt { fill: #89b4fa; font-weight: bold; }
+    .cmd { fill: #cdd6f4; font-weight: bold; }
+    .accent { fill: #f5c2e7; }
+    .cyan { fill: #89dceb; }
+    .green { fill: #a6e3a1; font-weight: bold; }
+    .yellow { fill: #f9e2af; }
+    .gray { fill: #6c7086; }
+    .badge { rx: 4px; }
+  </style>
+
+  <!-- Window Container -->
+  <rect x="20" y="20" width="1160" height="640" class="window" />
+
+  <!-- Window Header Bar -->
+  <path d="M 20 32 Q 20 20 32 20 L 1168 20 Q 1180 20 1180 32 L 1180 65 L 20 65 Z" fill="#11111b" />
+  <circle cx="50" cy="42" r="7" class="btn-red" />
+  <circle cx="72" cy="42" r="7" class="btn-yellow" />
+  <circle cx="94" cy="42" r="7" class="btn-green" />
+  <text x="600" y="47" class="title">rhidayat@cloud: ~/My-Company/project-generator (python-universal-scaffold)</text>
+
+  <!-- Terminal Content Area -->
+  <g transform="translate(50, 95)" class="term-text">
+    <!-- Step 1: Copier Copy Command -->
+    <text x="0" y="20">
+      <tspan class="prompt">❯ </tspan>
+      <tspan class="cmd">uvx copier copy gh:rhidayat1980/python-universal-scaffold payment-service</tspan>
+    </text>
+
+    <!-- Interactive Options -->
+    <text x="0" y="55">
+      <tspan class="cyan">🎤 Base architecture archetype:</tspan> <tspan class="green">api-service (FastAPI REST &amp; Async API)</tspan>
+    </text>
+    <text x="0" y="80">
+      <tspan class="cyan">🎤 Target Python runtime version:</tspan> <tspan class="yellow">3.13</tspan>
+    </text>
+    <text x="0" y="105">
+      <tspan class="cyan">🎤 Hardened multi-stage Dockerfile (UID 10001):</tspan> <tspan class="green">Yes</tspan>
+    </text>
+    <text x="0" y="130">
+      <tspan class="cyan">🎤 Async database layer (SQLAlchemy 2.0 + Alembic):</tspan> <tspan class="green">Yes</tspan>
+    </text>
+
+    <!-- Copier Generation Output -->
+    <text x="0" y="165" class="gray">
+      <tspan fill="#a6e3a1">✓</tspan> Copied 28 files from template (version 0.1.0) with zero bloat
+    </text>
+
+    <!-- Step 2: CD and Task Setup -->
+    <text x="0" y="205">
+      <tspan class="prompt">payment-service ❯ </tspan>
+      <tspan class="cmd">task setup</tspan>
+    </text>
+    <text x="0" y="235" class="gray">
+      task: [setup] test -f .env || cp .env.example .env
+    </text>
+    <text x="0" y="260">
+      <tspan fill="#fab387">⚡ uv sync:</tspan> <tspan class="cmd">Resolved 69 packages in </tspan><tspan class="green">429ms</tspan><tspan class="cmd"> | Installed 68 packages in </tspan><tspan class="green">339ms</tspan>
+    </text>
+
+    <!-- Step 3: Quality Gate -->
+    <text x="0" y="305">
+      <tspan class="prompt">payment-service ❯ </tspan>
+      <tspan class="cmd">task check:all</tspan>
+    </text>
+    <text x="0" y="335">
+      <tspan class="gray">task: [lint] </tspan><tspan class="green">✓ Ruff check &amp; format: 12 files passed</tspan>
+    </text>
+    <text x="0" y="360">
+      <tspan class="gray">task: [typecheck] </tspan><tspan class="green">✓ Pyright: 0 errors, 0 warnings, strict mode</tspan>
+    </text>
+    <text x="0" y="385">
+      <tspan class="gray">task: [test] </tspan><tspan class="green">✓ Pytest: 4 passed in 0.08s (100% core endpoints)</tspan>
+    </text>
+    <text x="0" y="410">
+      <tspan class="gray">task: [audit:deps] </tspan><tspan class="green">✓ pip-audit: No known vulnerabilities found</tspan>
+    </text>
+    <text x="0" y="435">
+      <tspan class="gray">task: [audit:sast] </tspan><tspan class="green">✓ Bandit SAST: 0 issues identified</tspan>
+    </text>
+
+    <!-- Highlight Banner -->
+    <g transform="translate(0, 470)">
+      <rect width="1060" height="42" rx="8" fill="#313244" />
+      <text x="20" y="26" font-weight="bold" fill="#a6e3a1">
+        🚀 Quality Gate Passed! Ready for Production &amp; Kubernetes Deployment in &lt; 60 seconds.
+      </text>
+    </g>
+  </g>
+</svg>

@@ -25,6 +25,14 @@ tasks:
     desc: "Check if a project has pending template updates (e.g., task check-update -- ../my-service)"
     cmd: copier check-update {{.CLI_ARGS}}
 
+  demo:vhs:
+    desc: "Generate demo GIF from VHS tape definition (media/demo.tape -> media/demo.gif)"
+    cmd: vhs media/demo.tape
+
+  demo:asciinema:
+    desc: "Record terminal session with asciinema (outputs to media/demo.cast)"
+    cmd: asciinema rec media/demo.cast
+
   test:render:api:
     desc: "Test render FastAPI service archetype"
     cmds:
