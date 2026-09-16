@@ -1,0 +1,5 @@
+[tools]
+copier = "latest"
+uv = "latest"
+task = "latest"
+python = "3.12"

@@ -1,0 +1,101 @@
+# {{ project_name }}
+
+> Arketipe: **`{{ project_archetype }}`** | Python **{{ python_version }}** | Tooling: **mise + uv + Taskfile**
+
+{{ project_archetype | capitalize }} project yang dibangun dengan standar arsitektur modern berbasis virtualenv terisolasi, locking deterministik, dan DevSecOps hardening.
+
+---
+
+## ⚡ Quickstart
+
+### 1. Inisialisasi Environment
+```bash
+# Izinkan mise pada direktori ini (jika menggunakan mise)
+mise trust
+
+# Setup file .env dan install dependensi ke .venv
+task setup
+```
+
+### 2. Menjalankan Layanan / Workflow
+{% if project_archetype == 'api-service' %}
+```bash
+# Jalankan FastAPI dev server dengan auto-reload (port 8000)
+task dev
+```
+Buka dokumentasi Swagger UI di: `http://localhost:8000/docs`
+{% elif project_archetype == 'data-analytics' %}
+```bash
+# Buka Jupyter Lab untuk eksplorasi data
+task notebook
+
+# Eksekusi pipeline analisis & transformasi
+task run
+```
+{% elif project_archetype == 'ai-ml' %}
+```bash
+# Jalankan skrip training model
+task train
+
+# Jalankan evaluasi model / skrip inference
+task eval
+```
+{% elif project_archetype == 'pipeline-worker' %}
+```bash
+# Jalankan worker consumer background task
+task worker
+```
+{% elif project_archetype == 'cli-tool' %}
+```bash
+# Jalankan perintah CLI lokal
+task run -- --help
+```
+{% elif project_archetype == 'library-package' %}
+```bash
+# Build package wheel dan sdist
+task build
+```
+{% endif %}
+
+---
+
+## 🛡 Quality Gate & Testing
+
+Jalankan serangkaian pengujian dan audit sebelum melakukan commit:
+
+```bash
+# Linting & Formatting check
+task lint
+
+# Perbaiki format kode secara otomatis
+task fix
+
+# Static Type Checking dengan Pyright
+task typecheck
+
+# Jalankan Pytest dengan test coverage
+task test
+
+# Audit kerentanan dependensi (CVE)
+task audit:deps
+
+# Audit keamanan kode sumber (SAST Bandit)
+task audit:sast
+
+# Jalankan semua quality gate sekaligus
+task check:all
+```
+
+{% if include_container %}
+---
+
+## 🐳 Container Docker
+
+```bash
+# Build image Docker produksi (non-root UID 10001)
+task docker:build
+
+# Jalankan container lokal
+task docker:run
+```
+{% endif %}

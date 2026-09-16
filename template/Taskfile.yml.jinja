@@ -1,0 +1,108 @@
+version: '3'
+
+tasks:
+  setup:
+    desc: "Inisialisasi environment lokal, copy .env, dan sync dependencies"
+    cmds:
+      - test -f .env || cp .env.example .env
+      - uv sync
+    sources:
+      - pyproject.toml
+      - .python-version
+    generates:
+      - uv.lock
+
+{% if project_archetype == 'api-service' %}
+  dev:
+    desc: "Jalankan dev server FastAPI dengan hot-reload"
+    cmd: uv run uvicorn {{ package_name }}.main:app --reload --host 0.0.0.0 --port 8000
+
+{% if include_database %}
+  db:migrate:
+    desc: "Terapkan migrasi database"
+    cmd: uv run alembic upgrade head
+
+  db:makemigrations:
+    desc: "Buat revisi migrasi baru (gunakan CLI_ARGS untuk pesan)"
+    cmd: uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"
+{% endif %}
+{% elif project_archetype == 'data-analytics' %}
+  notebook:
+    desc: "Buka Jupyter Lab"
+    cmd: uv run jupyter lab --ip 0.0.0.0
+
+  run:
+    desc: "Eksekusi pipeline transformasi data"
+    cmd: uv run python -m {{ package_name }}.pipelines.transform
+{% elif project_archetype == 'ai-ml' %}
+  train:
+    desc: "Mulai script training model"
+    cmd: uv run python -m {{ package_name }}.training.train
+
+  eval:
+    desc: "Jalankan evaluasi model / inference"
+    cmd: uv run python -m {{ package_name }}.inference
+{% elif project_archetype == 'pipeline-worker' %}
+  worker:
+    desc: "Jalankan async worker consumer"
+    cmd: uv run python -m {{ package_name }}.worker
+{% elif project_archetype == 'cli-tool' %}
+  run:
+    desc: "Jalankan CLI tool secara lokal"
+    cmd: uv run python -m {{ package_name }}.cli {{.CLI_ARGS}}
+{% elif project_archetype == 'library-package' %}
+  build:
+    desc: "Build distribusi wheel dan sdist"
+    cmd: uv build
+{% endif %}
+
+  test:
+    desc: "Jalankan unit tests dan test coverage"
+    cmd: uv run pytest --cov=src/{{ package_name }} --cov-report=term-missing
+
+  typecheck:
+    desc: "Validasi static type safety menggunakan Pyright"
+    cmd: uv run pyright
+
+  lint:
+    desc: "Validasi linting dan formatting dengan Ruff"
+    cmds:
+      - uv run ruff check .
+      - uv run ruff format --check .
+
+  fix:
+    desc: "Auto-format dan auto-fix linting issues"
+    cmds:
+      - uv run ruff format .
+      - uv run ruff check --fix .
+
+  audit:deps:
+    desc: "Audit kerentanan CVE pada third-party dependencies"
+    cmd: uv run pip-audit
+
+  audit:sast:
+    desc: "Static Application Security Testing (SAST) menggunakan Bandit"
+    cmd: uv run bandit -r src/ -c pyproject.toml
+
+  check:all:
+    desc: "Quality gate komprehensif (Lint + Typecheck + Test + Security)"
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
+      - task: audit:deps
+      - task: audit:sast
+
+{% if include_container %}
+  docker:build:
+    desc: "Build Docker container image produksi"
+    cmd: docker build -t {{ project_name }}:latest .
+
+  docker:run:
+    desc: "Jalankan Docker container lokal"
+{% if project_archetype == 'api-service' %}
+    cmd: docker run --rm -p 8000:8000 --env-file .env {{ project_name }}:latest
+{% else %}
+    cmd: docker run --rm --env-file .env {{ project_name }}:latest
+{% endif %}
+{% endif %}

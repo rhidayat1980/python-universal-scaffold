@@ -1,0 +1,42 @@
+"""Background worker consumer process."""
+
+import asyncio
+import signal
+import structlog
+
+from {{ package_name }}.core.config import settings
+from {{ package_name }}.core.logging import setup_logging
+from {{ package_name }}.tasks import process_task
+
+logger = structlog.get_logger()
+
+
+async def run_worker() -> None:
+    """Worker polling / consumer loop."""
+    setup_logging(settings.log_level)
+    logger.info("worker_started", redis_url=settings.redis_url)
+
+    stop_event = asyncio.Event()
+    loop = asyncio.get_running_loop()
+
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            loop.add_signal_handler(sig, stop_event.set)
+        except NotImplementedError:
+            # Signal handling on Windows
+            pass
+
+    counter = 0
+    while not stop_event.is_set():
+        counter += 1
+        await process_task(f"job-{counter}")
+        try:
+            await asyncio.wait_for(stop_event.wait(), timeout=5.0)
+        except asyncio.TimeoutError:
+            pass
+
+    logger.info("worker_shutdown_complete")
+
+
+if __name__ == "__main__":
+    asyncio.run(run_worker())

@@ -1,0 +1,38 @@
+"""Main FastAPI application entrypoint."""
+
+from contextlib import asynccontextmanager
+from typing import AsyncIterator
+
+from fastapi import FastAPI
+import structlog
+
+from {{ package_name }}.api.routes import router as api_router
+from {{ package_name }}.core.config import settings
+from {{ package_name }}.core.logging import setup_logging
+
+logger = structlog.get_logger()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Application startup and shutdown events."""
+    setup_logging(settings.log_level)
+    logger.info("application_started", environment=settings.environment)
+    yield
+    logger.info("application_stopped")
+
+
+app = FastAPI(
+    title="{{ project_name }}",
+    version="0.1.0",
+    lifespan=lifespan,
+)
+
+
+@app.get("/healthz", tags=["Health"])
+async def health_check() -> dict[str, str]:
+    """Health check endpoint for container probes and orchestrators."""
+    return {"status": "ok"}
+
+
+app.include_router(api_router, prefix="/api/v1")
