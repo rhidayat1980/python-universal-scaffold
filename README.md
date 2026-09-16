@@ -139,16 +139,21 @@ Every generated project adheres to a strict, standardized execution workflow:
 ```
 
 #### 1. Initialize Environment (One-time setup)
+
 ```bash
 task setup
 ```
+
 This task automatically:
+
 1. Provisions a local `.env` configuration file from `.env.example`.
 2. Creates an isolated virtual environment in `.venv/`.
 3. Locks and installs all dependencies deterministically via `uv sync`.
 
 #### 2. Run Local Workload (During Development)
+
 Execute the primary task command corresponding to your chosen archetype:
+
 ```bash
 # If api-service (FastAPI at http://localhost:8000)
 task dev
@@ -170,16 +175,21 @@ task build
 ```
 
 #### 3. Format & Auto-Fix Code (Before Committing)
+
 ```bash
 task fix
 ```
+
 Automatically formats code, cleans up imports, and fixes autofixable linter issues with **Ruff**.
 
 #### 4. Quality Gate & DevSecOps Verification (Required Before Push)
+
 ```bash
 task check:all
 ```
+
 Executes all 5 comprehensive quality and security gates simultaneously:
+
 - ✅ Code formatting & linting (**Ruff**)
 - ✅ Strict static type validation (**Pyright**)
 - ✅ Unit & flow test coverage (**Pytest**)
@@ -228,7 +238,9 @@ task docker:run         # Run production container locally
 When your application requires additional third-party packages not included in the initial archetype:
 
 ### 1. Adding Production Runtime Dependencies
+
 Use `uv add <package-name>`. This automatically updates `pyproject.toml`, refreshes `uv.lock`, and installs the package into `.venv/` in milliseconds:
+
 ```bash
 # Add payment SDKs, HTTP clients, or specific tools
 uv add httpx stripe
@@ -238,19 +250,24 @@ uv add "redis>=5.0.0" "celery[redis]>=5.4.0"
 ```
 
 ### 2. Adding Development / Testing Dependencies
+
 Use the `--dev` flag to ensure development packages are never bundled into the production container:
+
 ```bash
 # Add mock frameworks or test data generators
 uv add --dev faker factory-boy freezegun
 ```
 
 ### 3. Removing Dependencies
+
 ```bash
 uv remove stripe
 ```
 
 ### 4. Resyncing After Git Pulls
+
 When pulling changes made by other team members:
+
 ```bash
 task setup
 # Or directly via uv:
