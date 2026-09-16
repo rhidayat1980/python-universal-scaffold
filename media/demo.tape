@@ -18,6 +18,11 @@ Sleep 500ms
 Enter
 Sleep 1s
 
+Hide
+Type "rm -rf payment-service"
+Enter
+Show
+
 Type "uvx copier copy gh:rhidayat1980/python-universal-scaffold payment-service"
 Sleep 500ms
 Enter
