@@ -1,7 +1,7 @@
 """Data pipeline extraction and transformation module using Polars and DuckDB."""
 
-import polars as pl
 import duckdb
+import polars as pl
 import structlog
 
 logger = structlog.get_logger()
@@ -11,17 +11,21 @@ def run_pipeline() -> pl.DataFrame:
     """Execute analytic pipeline."""
     logger.info("pipeline_started")
 
-    # Sample pipeline creating DataFrame and aggregating with Polars
-    df = pl.DataFrame({
+    # Sample pipeline creating DataFrame and querying with DuckDB & Polars
+    raw_df = pl.DataFrame({
         "id": [1, 2, 3, 4, 5],
         "category": ["A", "B", "A", "B", "C"],
         "value": [10.5, 20.0, 15.2, 35.8, 42.1],
     })
 
-    aggregated = df.group_by("category").agg([
-        pl.col("value").mean().alias("avg_value"),
-        pl.col("value").count().alias("count"),
-    ])
+    # Query with DuckDB SQL engine and convert to Polars
+    query = """
+        SELECT category, AVG(value) AS avg_value, COUNT(id) AS count
+        FROM raw_df
+        GROUP BY category
+        ORDER BY category
+    """
+    aggregated: pl.DataFrame = duckdb.query(query).pl()
 
     logger.info("pipeline_completed", rows=len(aggregated))
     return aggregated

@@ -251,6 +251,7 @@ This repository is tailored for autonomous AI programming assistants (**Antigrav
 Because this scaffold is powered by Copier, you can seamlessly update existing projects with the latest template improvements, bugfixes, and security rules without losing any custom business logic.
 
 ### Option A: From Inside Your Generated Project
+
 Navigate into your project folder and run:
 
 ```bash
@@ -262,6 +263,7 @@ copier update
 ```
 
 ### Option B: From Inside the Template Repository
+
 If you maintain projects alongside this scaffold repository, leverage the built-in maintainer tasks:
 
 ```bash

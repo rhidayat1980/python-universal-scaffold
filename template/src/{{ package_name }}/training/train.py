@@ -1,9 +1,9 @@
 """Model training loop."""
 
+import structlog
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import structlog
 
 logger = structlog.get_logger()
 

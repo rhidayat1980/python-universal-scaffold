@@ -1,7 +1,7 @@
 """Machine learning model inference script."""
 
-import torch
 import structlog
+import torch
 
 logger = structlog.get_logger()
 

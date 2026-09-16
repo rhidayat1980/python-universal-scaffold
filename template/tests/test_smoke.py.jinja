@@ -1,7 +1,9 @@
 """Smoke test suite for validating core functionality."""
 
+{% if project_archetype in ['api-service', 'pipeline-worker'] %}
 import pytest
 
+{% endif %}
 {% if project_archetype == 'api-service' %}
 @pytest.mark.asyncio
 async def test_health_check(async_client):
@@ -31,6 +33,7 @@ def test_analytics_pipeline():
     assert "avg_value" in df.columns
 {% elif project_archetype == 'ai-ml' %}
 import torch
+
 from {{ package_name }}.inference import predict
 
 
@@ -50,6 +53,7 @@ async def test_worker_task():
     assert result is True
 {% elif project_archetype == 'cli-tool' %}
 from typer.testing import CliRunner
+
 from {{ package_name }}.cli import app
 
 runner = CliRunner()

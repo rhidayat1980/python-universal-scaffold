@@ -1,7 +1,7 @@
 """Worker task definition and processing."""
 
-from tenacity import retry, stop_after_attempt, wait_exponential
 import structlog
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = structlog.get_logger()
 
