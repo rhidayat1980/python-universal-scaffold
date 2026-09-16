@@ -1,6 +1,7 @@
 """Background worker consumer process."""
 
 import asyncio
+import contextlib
 import signal
 
 import structlog
@@ -21,20 +22,15 @@ async def run_worker() -> None:
     loop = asyncio.get_running_loop()
 
     for sig in (signal.SIGINT, signal.SIGTERM):
-        try:
+        with contextlib.suppress(NotImplementedError):
             loop.add_signal_handler(sig, stop_event.set)
-        except NotImplementedError:
-            # Signal handling on Windows
-            pass
 
     counter = 0
     while not stop_event.is_set():
         counter += 1
         await process_task(f"job-{counter}")
-        try:
+        with contextlib.suppress(TimeoutError):
             await asyncio.wait_for(stop_event.wait(), timeout=5.0)
-        except asyncio.TimeoutError:
-            pass
 
     logger.info("worker_shutdown_complete")
 

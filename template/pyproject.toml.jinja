@@ -11,14 +11,14 @@ dependencies = [
     "structlog>=24.4.0",
     "pydantic>=2.8.0",
     "pydantic-settings>=2.4.0",
-{% if project_archetype == 'api-service' %}
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.30.0",
 {% if include_database %}
     "sqlalchemy[asyncio]>=2.0.30",
     "asyncpg>=0.29.0",
     "alembic>=1.13.0",
 {% endif %}
+{% if project_archetype == 'api-service' %}
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
 {% elif project_archetype == 'data-analytics' %}
     "polars>=1.6.0",
     "duckdb>=1.0.0",

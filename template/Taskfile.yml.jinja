@@ -19,16 +19,6 @@ tasks:
   dev:
     desc: "Run FastAPI dev server with auto-reload"
     cmd: uv run uvicorn {{ package_name }}.main:app --reload --host 0.0.0.0 --port 8000
-
-{% if include_database %}
-  db:migrate:
-    desc: "Apply database migrations"
-    cmd: uv run alembic upgrade head
-
-  db:makemigrations:
-    desc: "Create new migration revision (use CLI_ARGS for message)"
-    cmd: uv run alembic revision --autogenerate -m "{% raw %}{{.CLI_ARGS}}{% endraw %}"
-{% endif %}
 {% elif project_archetype == 'data-analytics' %}
   notebook:
     desc: "Open JupyterLab environment"
@@ -57,6 +47,16 @@ tasks:
   build:
     desc: "Build wheel and sdist distribution packages"
     cmd: uv build
+{% endif %}
+
+{% if include_database %}
+  db:migrate:
+    desc: "Apply database migrations"
+    cmd: uv run alembic upgrade head
+
+  db:makemigrations:
+    desc: "Create new migration revision (use CLI_ARGS for message)"
+    cmd: uv run alembic revision --autogenerate -m "{% raw %}{{.CLI_ARGS}}{% endraw %}"
 {% endif %}
 
   test:
