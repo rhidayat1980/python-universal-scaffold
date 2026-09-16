@@ -31,7 +31,7 @@ tasks:
 
   demo:asciinema:
     desc: "Record declarative demo with asciinema (outputs to media/demo.cast)"
-    cmd: bash -c "chmod +x media/record-demo.sh && uvx asciinema rec -c media/record-demo.sh --cols=110 --rows=28 --overwrite media/demo.cast"
+    cmd: bash -c "chmod +x media/record-demo.sh && uvx asciinema rec -c media/record-demo.sh --cols=120 --rows=32 --overwrite media/demo.cast"
 
   test:render:api:
     desc: "Test render FastAPI service archetype"
