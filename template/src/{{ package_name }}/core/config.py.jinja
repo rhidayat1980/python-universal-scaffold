@@ -9,14 +9,12 @@ class Settings(BaseSettings):
     environment: str = "development"
     log_level: str = "INFO"
     port: int = 8000
-
-{% if include_database %}
+{%- if include_database %}
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/{{ package_name }}_dev"
-{% endif %}
-
-{% if project_archetype == 'pipeline-worker' %}
+{%- endif %}
+{%- if project_archetype == 'pipeline-worker' %}
     redis_url: str = "redis://localhost:6379/0"
-{% endif %}
+{%- endif %}
 
     model_config = SettingsConfigDict(
         env_file=".env",
