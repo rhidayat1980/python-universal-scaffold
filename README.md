@@ -311,9 +311,18 @@ This repository is tailored for autonomous AI programming assistants (**Antigrav
 
 Because this scaffold is powered by Copier, you can seamlessly update existing projects with the latest template improvements, bugfixes, and security rules without losing any custom business logic.
 
+> ⚠️ **Prerequisite for Template Updates**:
+> Copier uses Git's **3-way merge engine** to safely update files without destroying your changes. Therefore, your generated project **must be a Git repository with an initial commit**:
+> ```bash
+> cd my-new-service
+> git init
+> git add .
+> git commit -m "feat: initial commit from template"
+> ```
+
 ### Option A: From Inside Your Generated Project
 
-Navigate into your project folder and run:
+Once your project is committed, navigate into your project folder and run:
 
 ```bash
 # Pull and apply latest template updates via Taskfile

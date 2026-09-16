@@ -175,3 +175,18 @@ task docker:build
 task docker:run
 ```
 {% endif %}
+
+---
+
+## 🔄 Keeping Project Up-to-Date
+
+To pull upstream template improvements, security updates, and tooling fixes without losing custom business code:
+
+```bash
+# Ensure your working directory is clean and committed to Git first:
+git add .
+git commit -m "chore: save working state before template update"
+
+# Fetch and apply upstream template updates:
+task update:template
+```
