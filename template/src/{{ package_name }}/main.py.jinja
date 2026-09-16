@@ -3,8 +3,8 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
 import structlog
+from fastapi import FastAPI
 
 from {{ package_name }}.api.routes import router as api_router
 from {{ package_name }}.core.config import settings
