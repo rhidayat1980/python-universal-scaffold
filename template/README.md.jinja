@@ -6,9 +6,9 @@ Production-ready {{ project_archetype }} project built with modern isolated virt
 
 ---
 
-## ⚡ Recommended Workflow (Urutan Eksekusi Task)
+## ⚡ Recommended Workflow
 
-Setelah proyek selesai di-generate, ikuti alur eksekusi task standar berikut:
+Follow this standardized task execution sequence after scaffolding:
 
 ```text
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
@@ -17,100 +17,100 @@ Setelah proyek selesai di-generate, ikuti alur eksekusi task standar berikut:
 └──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
 ```
 
-### 1. Initialize Environment (Sekali di Awal)
+### 1. Initialize Environment (One-time setup)
 ```bash
-# Trust konfigurasi lokal mise (jika menggunakan mise)
+# Trust project-level mise configuration (if using mise)
 mise trust
 
-# Inisialisasi .env dan install seluruh dependensi via uv sync
+# Provision .env and synchronize all dependencies via uv sync
 task setup
 ```
 
-### 2. Run Local Development (Saat Coding)
+### 2. Run Local Development (During Development)
 {% if project_archetype == 'api-service' %}
 ```bash
-# Jalankan FastAPI dev server dengan hot reload (port 8000)
+# Start FastAPI dev server with auto-reload (port 8000)
 task dev
 ```
-Buka dokumentasi interaktif OpenAPI Swagger UI di: `http://localhost:8000/docs`
+Open interactive Swagger UI documentation at: `http://localhost:8000/docs`
 {% elif project_archetype == 'data-analytics' %}
 ```bash
-# Buka lingkungan JupyterLab
+# Launch JupyterLab environment
 task notebook
 
-# Jalankan data pipeline extraction & transformation
+# Execute data extraction and transformation pipeline
 task run
 ```
 {% elif project_archetype == 'ai-ml' %}
 ```bash
-# Jalankan model training loop
+# Launch model training loop
 task train
 
-# Jalankan model inference / evaluation
+# Run model evaluation / inference
 task eval
 ```
 {% elif project_archetype == 'pipeline-worker' %}
 ```bash
-# Jalankan background task worker
+# Start background worker process
 task worker
 ```
 {% elif project_archetype == 'cli-tool' %}
 ```bash
-# Jalankan tool CLI lokal
+# Execute local CLI application
 task run -- --help
 ```
 {% elif project_archetype == 'library-package' %}
 ```bash
-# Build paket wheel dan sdist
+# Build distribution packages (wheel and sdist)
 task build
 ```
 {% endif %}
 
-### 3. Format & Auto-Fix Code (Sebelum Commit)
+### 3. Format & Auto-Fix Code (Before Committing)
 ```bash
-# Merapikan formatting dan auto-fix isu linting dengan Ruff
+# Auto-format and resolve autofixable lint issues with Ruff
 task fix
 ```
 
-### 4. Quality Gate & DevSecOps Verification (Wajib Lulus Sebelum Push)
+### 4. Quality Gate & DevSecOps Verification (Required Before Push)
 ```bash
-# Menjalankan 5 quality gate sekaligus (Lint + Typecheck + Test + Bandit SAST + pip-audit)
+# Run all 5 quality and security checks (Lint + Typecheck + Test + Bandit SAST + pip-audit)
 task check:all
 ```
 
 ---
 
-## 📦 Mengelola Dependensi dengan `uv`
+## 📦 Managing Dependencies with `uv`
 
-Jika proyek Anda membutuhkan library tambahan yang belum disediakan oleh scaffolder:
+When your application requires additional third-party packages:
 
-### 1. Menambah Library Produksi (Runtime Dependency)
-Gunakan `uv add <nama-package>`. Perintah ini otomatis memperbarui `pyproject.toml`, meng-update `uv.lock`, dan menginstall ke `.venv`:
+### 1. Adding Production Runtime Dependencies
+Use `uv add <package-name>`. This automatically updates `pyproject.toml`, refreshes `uv.lock`, and installs the package into `.venv/`:
 ```bash
-# Contoh: Menambahkan library HTTP client atau payment SDK
+# Example: Adding an HTTP client or payment SDK
 uv add httpx stripe
 
-# Contoh: Menambahkan dengan batasan versi spesifik
+# Example: Adding packages with specific version constraints
 uv add "redis>=5.0.0"
 ```
 
-### 2. Menambah Library Khusus Development / Testing
-Gunakan flag `--dev` agar dependensi tidak terbawa ke Docker image production:
+### 2. Adding Development / Testing Dependencies
+Use the `--dev` flag so test packages are excluded from production container builds:
 ```bash
-# Contoh: Menambahkan Faker atau Factory-Boy untuk mocking data test
+# Example: Adding Faker or Factory-Boy for mock test data
 uv add --dev faker factory-boy
 ```
 
-### 3. Menghapus Library
+### 3. Removing Dependencies
 ```bash
 uv remove stripe
 ```
 
-### 4. Sinkronisasi Ulang Environment
-Jika Anda menarik perubahan (`git pull`) dari rekan tim lain yang mengubah dependensi:
+### 4. Resyncing Environments
+When pulling changes from collaborators that update dependencies:
 ```bash
 task setup
-# Atau langsung via uv:
+# Or directly via uv:
 uv sync
 ```
 
@@ -148,16 +148,16 @@ task check:all
 
 ## 🐘 Local Infrastructure (Docker Compose)
 
-Jalankan layanan pendukung lokal (PostgreSQL / Redis) dengan perintah sederhana:
+Spin up local background dependencies (PostgreSQL / Redis) with simple tasks:
 
 ```bash
-# Nyalakan PostgreSQL / Redis di background
+# Start PostgreSQL / Redis in background
 task services:up
 
-# Cek status dan log container layanan pendukung
+# Follow container logs
 task services:logs
 
-# Matikan layanan pendukung setelah selesai bekerja
+# Stop background services
 task services:down
 ```
 {% endif %}

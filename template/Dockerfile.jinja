@@ -17,11 +17,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:{{ python_version }}-slim-bookworm AS runner
 WORKDIR /app
 
-# Konfigurasi non-root user (UID/GID 10001)
+# Configure unprivileged non-root user (UID/GID 10001)
 RUN groupadd -g 10001 appgroup && \
     useradd -u 10001 -g appgroup -s /bin/bash -m appuser
 
-# Ambil artifact build dari stage sebelumnya
+# Copy virtual environment and source code from builder stage
 COPY --from=builder --chown=appuser:appgroup /app/.venv /app/.venv
 COPY --from=builder --chown=appuser:appgroup /app/src /app/src
 

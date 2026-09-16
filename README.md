@@ -138,48 +138,48 @@ Every generated project adheres to a strict, standardized execution workflow:
 └──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
 ```
 
-#### 1. Inisialisasi Environment (Sekali di awal)
+#### 1. Initialize Environment (One-time setup)
 ```bash
 task setup
 ```
-Perintah ini otomatis:
-1. Membuat file konfigurasi lokal `.env` dari `.env.example`.
-2. Menyiapkan virtual environment `.venv/`.
-3. Menginstal dan mengunci seluruh dependensi via `uv sync`.
+This task automatically:
+1. Provisions a local `.env` configuration file from `.env.example`.
+2. Creates an isolated virtual environment in `.venv/`.
+3. Locks and installs all dependencies deterministically via `uv sync`.
 
-#### 2. Menjalankan Workload Lokal (Saat Coding)
-Jalankan command sesuai arketipe yang Anda pilih:
+#### 2. Run Local Workload (During Development)
+Execute the primary task command corresponding to your chosen archetype:
 ```bash
-# Jika api-service (FastAPI di http://localhost:8000)
+# If api-service (FastAPI at http://localhost:8000)
 task dev
 
-# Jika data-analytics (JupyterLab exploration)
+# If data-analytics (JupyterLab exploration)
 task notebook
 
-# Jika ai-ml (Model training loop)
+# If ai-ml (Model training loop)
 task train
 
-# Jika pipeline-worker (Background queue consumer)
+# If pipeline-worker (Background queue consumer)
 task worker
 
-# Jika cli-tool (Terminal command)
+# If cli-tool (Terminal command)
 task run -- --help
 
-# Jika library-package (Build distribution wheel)
+# If library-package (Build distribution wheel)
 task build
 ```
 
-#### 3. Format & Auto-Fix Code (Sebelum Commit)
+#### 3. Format & Auto-Fix Code (Before Committing)
 ```bash
 task fix
 ```
-Merapikan indentasi, imports, dan otomatis memperbaiki isu linter dengan **Ruff**.
+Automatically formats code, cleans up imports, and fixes autofixable linter issues with **Ruff**.
 
-#### 4. Quality Gate & DevSecOps Verification (Wajib Lulus Sebelum Push)
+#### 4. Quality Gate & DevSecOps Verification (Required Before Push)
 ```bash
 task check:all
 ```
-Menjalankan 5 gerbang pengujian kualitas sekaligus:
+Executes all 5 comprehensive quality and security gates simultaneously:
 - ✅ Code formatting & linting (**Ruff**)
 - ✅ Strict static type validation (**Pyright**)
 - ✅ Unit & flow test coverage (**Pytest**)
