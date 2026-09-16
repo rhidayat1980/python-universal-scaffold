@@ -1,6 +1,27 @@
 # copier.yml - Interactive Prompt Configuration for Python Universal Scaffold
 _min_copier_version: "9.0.0"
 _subdirectory: "template"
+_exclude:
+  - "{% if project_archetype != 'data-analytics' %}data{% endif %}"
+  - "{% if project_archetype != 'data-analytics' %}notebooks{% endif %}"
+  - "{% if project_archetype != 'data-analytics' %}src/**/pipelines{% endif %}"
+  - "{% if project_archetype != 'data-analytics' %}src/**/queries{% endif %}"
+  - "{% if project_archetype != 'ai-ml' %}models{% endif %}"
+  - "{% if project_archetype != 'ai-ml' %}datasets{% endif %}"
+  - "{% if project_archetype != 'ai-ml' %}src/**/inference.py*{% endif %}"
+  - "{% if project_archetype != 'ai-ml' %}src/**/training{% endif %}"
+  - "{% if project_archetype != 'api-service' %}src/**/main.py*{% endif %}"
+  - "{% if project_archetype != 'api-service' %}src/**/api{% endif %}"
+  - "{% if project_archetype != 'api-service' %}src/**/schemas{% endif %}"
+  - "{% if not include_database %}src/**/db{% endif %}"
+  - "{% if not include_database %}src/**/models{% endif %}"
+  - "{% if project_archetype != 'pipeline-worker' %}src/**/worker.py*{% endif %}"
+  - "{% if project_archetype != 'pipeline-worker' %}src/**/tasks.py*{% endif %}"
+  - "{% if project_archetype != 'cli-tool' %}src/**/cli.py*{% endif %}"
+  - "{% if project_archetype != 'library-package' %}src/**/core.py*{% endif %}"
+  - "{% if project_archetype != 'library-package' %}src/**/exceptions.py*{% endif %}"
+  - "{% if not include_container %}Dockerfile*{% endif %}"
+  - "{% if not include_container %}.dockerignore{% endif %}"
 
 project_name:
   type: str
