@@ -28,9 +28,9 @@ Whenever you (the AI Agent) interact with this repository, you must maintain:
 | `api-service` | `main.py`, `api/routes.py`, `core/config.py`, `core/logging.py`, `schemas/` *(optional: `db/session.py`, `models/base.py`)* | `fastapi`, `uvicorn[standard]`, `pydantic-settings` |
 | `data-analytics` | `pipelines/transform.py`, `queries/metrics.sql`, `notebooks/01_exploration.ipynb`, `data/{raw,interim,processed}/` | `polars`, `duckdb`, `pyarrow`, `jupyterlab`, `altair` |
 | `ai-ml` | `inference.py`, `training/train.py`, `models/.gitkeep`, `datasets/.gitkeep` | `torch` (CPU or CUDA-12 wheel index), `huggingface-hub`, `numpy` |
-| `pipeline-worker`| `worker.py`, `tasks.py`, `core/config.py` | `redis`, `structlog`, `tenacity`, `pydantic-settings` |
+| `pipeline-worker` | `worker.py`, `tasks.py`, `core/config.py` | `redis`, `structlog`, `tenacity`, `pydantic-settings` |
 | `cli-tool` | `cli.py`, `core/config.py` | `typer`, `rich` |
-| `library-package`| `core.py`, `exceptions.py`, `py.typed` | Zero external bloat; pure Python standard library |
+| `library-package` | `core.py`, `exceptions.py`, `py.typed` | Zero external bloat; pure Python standard library |
 
 ---
 
