@@ -31,12 +31,14 @@
 Before using this scaffold generator, understand the foundational design philosophy and target environment:
 
 ### 1. Key Assumptions
+
 - **Modern Python Only**: This scaffold assumes **Python 3.12 or 3.13**. Legacy Python (<=3.11) is intentionally unsupported to leverage modern type syntax, fast asyncio, and performance gains.
 - **Zero Host Pollution**: You should **never** install application packages globally or use standard `pip install`. Every project manages its own hermetic virtual environment (`.venv/`) via `uv`.
 - **Reproducible Runtimes**: We assume tool versions (`uv`, `go-task`, `python`) should be locked per-project to guarantee that code runs identically on Linux, macOS, WSL2, and CI/CD pipelines.
 - **Strict `src/` Layout**: All source code is placed inside `src/<package_name>/`. Flat layouts are avoided to prevent packaging ambiguities and import side-effects.
 
 ### 2. Starting Point
+
 - **As an Individual Developer or Team**: You want to start a brand new Python service, pipeline, or library without wasting hours configuring linters, typecheckers, Dockerfiles, and CI pipelines.
 - **You do NOT need a cloned template to use it**: You can generate projects directly from the GitHub repository using a single command (`uvx copier copy`).
 - **You CAN update existing projects**: Because the scaffold is powered by Copier, you can update an existing project later when the template evolves by running `copier update`.
@@ -48,15 +50,20 @@ Before using this scaffold generator, understand the foundational design philoso
 You only need **one** of the following tools installed on your system (Linux, macOS, or Windows WSL2):
 
 ### Option A: Using `uv` (Recommended - Zero Configuration)
+
 If you have [Astral uv](https://docs.astral.sh/uv/) installed:
+
 ```bash
 # Verify installation
 uv --version
 ```
+
 > `uv` includes `uvx`, which downloads and runs Copier in an ephemeral cache without installing anything globally!
 
 ### Option B: Using `mise` (Polyglot Tool Manager)
+
 If your machine uses [mise-en-place](https://mise.jdx.dev/):
+
 ```bash
 # Install uv, copier, and task via mise
 mise use -g uv@latest copier@latest task@latest
@@ -71,16 +78,19 @@ mise use -g uv@latest copier@latest task@latest
 Follow these steps to scaffold and run a production-ready application in under 2 minutes:
 
 ### Step 1: Run the Generator
+
 Open your terminal in the directory where you want your new project folder to reside, then execute:
 
 ```bash
 uvx copier copy gh:rhidayat1980/python-universal-scaffold my-new-service
 ```
+
 *(Alternatively, if working with a local clone of this template repository: `copier copy /path/to/python-universal-scaffold my-new-service`)*
 
 ---
 
 ### Step 2: Answer the Interactive Prompts
+
 Copier will prompt you with the following configuration options:
 
 | Prompt | Description | Default | Example Options |
@@ -93,11 +103,12 @@ Copier will prompt you with the following configuration options:
 | `include_database` | Include async SQLAlchemy 2.0 + Alembic | `false` | `true`, `false` *(API / Worker only)* |
 | `compute_target` | Hardware compute accelerator for AI/ML | `cpu` | `cpu`, `cuda-12` *(AI/ML only)* |
 | `author_name` | Maintainer full name | `Engineering Team` | `Jane Doe` |
-| `author_email` | Maintainer email address | `dev@company.local`| `jane@company.com` |
+| `author_email` | Maintainer email address | `dev@company.local` | `jane@company.com` |
 
 ---
 
 ### Step 3: Enter and Trust the Environment
+
 Navigate into your newly generated repository:
 
 ```bash
@@ -110,19 +121,23 @@ mise trust
 ---
 
 ### Step 4: One-Click Environment Setup
+
 Run the unified setup task:
 
 ```bash
 task setup
 ```
+
 This task automatically:
+
 1. Creates a local `.env` configuration file from `.env.example` (if not already present).
 2. Provisions a dedicated `.venv/` virtual environment.
 3. Installs and locks all runtime and development dependencies deterministically via `uv sync`.
 
 ---
 
-### Step 5: Start Developing!
+### Step 5: Start Developing
+
 Launch your workload according to the chosen archetype:
 
 ```bash
@@ -145,12 +160,15 @@ task run -- --help
 ---
 
 ### Step 6: Validate with the Quality Gate
+
 Before submitting any pull request or pushing code, run the full DevSecOps Quality Gate:
 
 ```bash
 task check:all
 ```
+
 This single command executes:
+
 - ✅ Code formatting & linting with **Ruff**
 - ✅ Strict static type validation with **Pyright**
 - ✅ Test suite execution with coverage report via **Pytest**
@@ -194,15 +212,18 @@ task docker:run         # Run production container locally
 ## 🛡 DevSecOps & Observability by Default
 
 ### 1. Hardened Docker Containers
+
 - **Multi-Stage Build**: Builder stage leverages Astral uv caching (`--mount=type=cache,target=/root/.cache/uv`), reducing build times by up to 90%.
 - **Non-Root Execution**: Runs under an unprivileged user `appuser` (`UID 10001:GID 10001`), preventing container breakout attacks.
 - **Native Health Checks**: Includes an integrated `HEALTHCHECK` probing `/healthz` for Kubernetes, Docker Swarm, and GCP Cloud Run.
 
 ### 2. Structured JSON Logging
+
 - Pre-configured using `structlog` in `src/<pkg>/core/logging.py`.
 - Formats logs into standard JSON with ISO timestamps, log levels, contextual metadata, and traceback rendering, ready for Datadog, Grafana Loki, or Google Cloud Logging.
 
 ### 3. CI/CD GitHub Actions
+
 - Pre-configured `.github/workflows/ci.yml` using `jdx/mise-action@v2`.
 - Local developers and CI runners execute the exact same task: `task check:all`.
 
@@ -227,6 +248,7 @@ When new features or security enhancements are released in this template, update
 cd my-new-service
 copier update
 ```
+
 Copier computes a three-way Git diff, allowing you to review and merge template improvements effortlessly.
 
 ---

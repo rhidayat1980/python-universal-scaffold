@@ -11,6 +11,7 @@ This repository is a **Universal Scaffolding Generator for Modern Python** power
 Its mission is to support **6 production archetypes** without introducing dependency bloat, host machine pollution, or tooling ambiguities.
 
 Whenever you (the AI Agent) interact with this repository, you must maintain:
+
 1. **Separation of Concerns**:
    - `mise`: Manages machine-level CLI binaries (`uv`, `go-task`, and runtime `python`).
    - `uv`: Manages Python package resolution, deterministic locking (`uv.lock`), and virtual environment (`.venv/`).
@@ -36,15 +37,18 @@ Whenever you (the AI Agent) interact with this repository, you must maintain:
 ## 3. Critical Code Standards (Non-Negotiable)
 
 ### A. Layout & Packaging Standards
+
 - **Mandatory `src/` Layout**: All Python code must reside inside `src/{{ package_name }}/`. Flat layouts are strictly prohibited to prevent import shadowing and test environment pollution.
 - **Build Backend**: Use `hatchling` (`[build-system] requires = ["hatchling"]`, `build-backend = "hatchling.build"`).
 - **PEP 561 Marker**: Always keep `src/{{ package_name }}/py.typed` to signal downstream type checkers.
 
 ### B. Single Configuration Rule
+
 - All tool configurations (`ruff`, `pyright`, `pytest`, hatch packaging) **must be centralized in `pyproject.toml`**.
 - Never introduce separate configuration files such as `.flake8`, `setup.cfg`, `tox.ini`, or `mypy.ini`.
 
 ### C. Container Hardening (DevSecOps)
+
 - `Dockerfile.jinja` **must** be multi-stage:
   - Stage 1 (`builder`): Based on `ghcr.io/astral-sh/uv:bookworm-slim` with build cache mount `/root/.cache/uv`.
   - Stage 2 (`runner`): Based on `python:slim-bookworm`.
@@ -52,6 +56,7 @@ Whenever you (the AI Agent) interact with this repository, you must maintain:
   - **Healthcheck**: Include native `HEALTHCHECK` for `api-service`.
 
 ### D. Security & Secret Management
+
 - `.env` must never be committed. Always provide `.env.example.jinja`.
 - Task `task setup` must verify: `test -f .env || cp .env.example .env`.
 - Task `task audit:deps` must execute: `uv run pip-audit`.
@@ -65,20 +70,27 @@ When modifying `copier.yml` or files under `template/`:
 
 1. **Test Rendering**:
    Use the maintainer task runner:
+
    ```bash
    task test:render:all
    ```
+
    Or manually test render a single archetype:
+
    ```bash
    uvx copier copy --defaults --data project_name="test-api" --data project_archetype="api-service" . /tmp/test-api
    ```
+
 2. **Validate Generated Project**:
+
    ```bash
    cd /tmp/test-api
    task setup
    task check:all
    ```
+
 3. **Clean Up**:
+
    ```bash
    task clean
    ```
