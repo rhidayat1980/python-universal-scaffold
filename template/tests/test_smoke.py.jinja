@@ -1,5 +1,5 @@
 """Smoke test suite for validating core functionality."""
-{% if project_archetype == 'api-service' %}
+{%- if project_archetype == 'api-service' %}
 
 import pytest
 
@@ -20,7 +20,7 @@ async def test_system_info(async_client):
     data = response.json()
     assert data["service"] == "{{ project_name }}"
     assert data["archetype"] == "{{ project_archetype }}"
-{% elif project_archetype == 'data-analytics' %}
+{%- elif project_archetype == 'data-analytics' %}
 
 from {{ package_name }}.pipelines.transform import run_pipeline
 
@@ -31,7 +31,7 @@ def test_analytics_pipeline():
     assert len(df) > 0
     assert "category" in df.columns
     assert "avg_value" in df.columns
-{% elif project_archetype == 'ai-ml' %}
+{%- elif project_archetype == 'ai-ml' %}
 
 import torch
 
@@ -43,7 +43,7 @@ def test_inference():
     dummy_input = torch.randn(2, 8)
     preds = predict(dummy_input)
     assert preds.shape == (2, 1)
-{% elif project_archetype == 'pipeline-worker' %}
+{%- elif project_archetype == 'pipeline-worker' %}
 
 import pytest
 
@@ -55,7 +55,7 @@ async def test_worker_task():
     """Ensure background task processor executes successfully."""
     result = await process_task("test-task-1")
     assert result is True
-{% elif project_archetype == 'cli-tool' %}
+{%- elif project_archetype == 'cli-tool' %}
 
 from typer.testing import CliRunner
 
@@ -76,7 +76,7 @@ def test_cli_greet():
     result = runner.invoke(app, ["greet", "Developer"])
     assert result.exit_code == 0
     assert "Developer" in result.stdout
-{% elif project_archetype == 'library-package' %}
+{%- elif project_archetype == 'library-package' %}
 
 from {{ package_name }}.core import execute_core_action
 
@@ -86,4 +86,4 @@ def test_core_action(sample_payload):
     result = execute_core_action(sample_payload)
     assert result["status"] == "processed"
     assert result["keys_count"] == 2
-{% endif %}
+{%- endif %}
