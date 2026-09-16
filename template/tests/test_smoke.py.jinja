@@ -1,10 +1,9 @@
 """Smoke test suite for validating core functionality."""
+{% if project_archetype == 'api-service' %}
 
-{% if project_archetype in ['api-service', 'pipeline-worker'] %}
 import pytest
 
-{% endif %}
-{% if project_archetype == 'api-service' %}
+
 @pytest.mark.asyncio
 async def test_health_check(async_client):
     """Ensure health check responds with ok status."""
@@ -22,6 +21,7 @@ async def test_system_info(async_client):
     assert data["service"] == "{{ project_name }}"
     assert data["archetype"] == "{{ project_archetype }}"
 {% elif project_archetype == 'data-analytics' %}
+
 from {{ package_name }}.pipelines.transform import run_pipeline
 
 
@@ -32,6 +32,7 @@ def test_analytics_pipeline():
     assert "category" in df.columns
     assert "avg_value" in df.columns
 {% elif project_archetype == 'ai-ml' %}
+
 import torch
 
 from {{ package_name }}.inference import predict
@@ -43,6 +44,9 @@ def test_inference():
     preds = predict(dummy_input)
     assert preds.shape == (2, 1)
 {% elif project_archetype == 'pipeline-worker' %}
+
+import pytest
+
 from {{ package_name }}.tasks import process_task
 
 
@@ -52,6 +56,7 @@ async def test_worker_task():
     result = await process_task("test-task-1")
     assert result is True
 {% elif project_archetype == 'cli-tool' %}
+
 from typer.testing import CliRunner
 
 from {{ package_name }}.cli import app
@@ -72,6 +77,7 @@ def test_cli_greet():
     assert result.exit_code == 0
     assert "Developer" in result.stdout
 {% elif project_archetype == 'library-package' %}
+
 from {{ package_name }}.core import execute_core_action
 
 

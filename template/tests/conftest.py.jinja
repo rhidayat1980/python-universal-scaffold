@@ -1,9 +1,8 @@
 """Global test fixtures and configurations."""
-
-import pytest
-
 {% if project_archetype == 'api-service' %}
+
 from httpx import ASGITransport, AsyncClient
+import pytest
 
 from {{ package_name }}.main import app
 
@@ -17,6 +16,10 @@ async def async_client():
     ) as client:
         yield client
 {% else %}
+
+import pytest
+
+
 @pytest.fixture
 def sample_payload():
     """Sample test payload fixture."""
